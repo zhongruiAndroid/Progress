@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyProgress">
+        <attr name="bgColor" format="color"></attr>
+        <attr name="borderColor" format="color"></attr>
+        <attr name="borderWidth" format="dimension"></attr>
+        <attr name="progressColor" format="color"></attr>
+        <attr name="allInterval" format="dimension"></attr>
+        <attr name="leftInterval" format="dimension"></attr>
+        <attr name="topInterval" format="dimension"></attr>
+        <attr name="rightInterval" format="dimension"></attr>
+        <attr name="bottomInterval" format="dimension"></attr>
+        <attr name="showAnimation" format="boolean"></attr>
+        <attr name="isRound" format="boolean"></attr>
+        <attr name="max" format="integer"></attr>
+        <attr name="progress" format="integer"></attr>
+        <attr name="angle" format="integer"></attr>
+
+    </declare-styleable>
+</resources>
