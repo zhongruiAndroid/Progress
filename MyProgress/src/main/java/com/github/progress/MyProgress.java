@@ -174,10 +174,10 @@ public class MyProgress extends View{
             progressWidth=borderViewWidth-leftInterval-rightInterval;
             progressHeight=borderViewHeight-topInterval-bottomInterval;
         }
-        RectF rectF=new RectF(0,-borderViewHeight /2+topOffset,progress* progressWidth /max, borderViewHeight /2-bottomOffset);
+
+        RectF rectF=new RectF(leftOffset,-borderViewHeight /2+topOffset,(borderViewWidth-rightOffset)*progress/max, borderViewHeight /2-bottomOffset);
 
         canvas.save();
-        canvas.translate(leftOffset,topOffset);
         if(isRound){
             canvas.drawRoundRect(rectF, progressHeight /2, progressHeight /2,progressPaint);
         }else{

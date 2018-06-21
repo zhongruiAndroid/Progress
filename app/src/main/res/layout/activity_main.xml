@@ -25,17 +25,13 @@
     app:allInterval="10dp"
     />
     <com.github.progress.MyProgress
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:layout_margin="20dp"
         app:borderWidth="4dp"
         android:padding="20dp"
         android:background="@color/colorAccent"
-        app:leftInterval="5dp"
-        app:rightInterval="5dp"
-        app:topInterval="2dp"
-        app:bottomInterval="2dp"
         app:max="100"
-        app:progress="100"
+        app:progress="5"
         />
 </LinearLayout>
