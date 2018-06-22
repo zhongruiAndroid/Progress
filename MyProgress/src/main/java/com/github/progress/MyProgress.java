@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -63,6 +64,8 @@ public class MyProgress extends View{
     private Paint bgPaint;
     private Paint borderPaint;
     private Paint progressPaint;
+    private Path progressPath=new Path();
+    private Path resultPath=new Path();
 
     public MyProgress(Context context) {
         super(context);
@@ -224,13 +227,17 @@ public class MyProgress extends View{
     }
     private void drawBg(Canvas canvas) {
         RectF rectF=new RectF(-viewWidth/2,-viewHeight/2, viewWidth/2, viewHeight /2);
+        resultPath.reset();
         if(isRound){
             if(radius>0){
                 canvas.drawRoundRect(rectF, radius,radius,bgPaint);
+                resultPath.addRoundRect(rectF,radius, radius, Path.Direction.CW);
             }else{
                 canvas.drawRoundRect(rectF, viewHeight /2, viewHeight /2,bgPaint);
+                resultPath.addRoundRect(rectF,viewHeight /2, viewHeight /2, Path.Direction.CW);
             }
         }else{
+            resultPath.addRect(rectF, Path.Direction.CW);
             canvas.drawRect(rectF,bgPaint);
         }
     }
@@ -255,15 +262,23 @@ public class MyProgress extends View{
         }
         RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*progress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
 
+        progressPath.reset();
+
         if(isRound){
             if(radius>0){
-                canvas.drawRoundRect(rectF,radius, radius,progressPaint);
+//                canvas.drawRoundRect(rectF,radius, radius,progressPaint);
+                progressPath.addRoundRect(rectF,radius, radius, Path.Direction.CW);
             }else{
-                canvas.drawRoundRect(rectF, progressHeight /2, progressHeight /2,progressPaint);
+//                canvas.drawRoundRect(rectF, progressHeight /2, progressHeight /2,progressPaint);
+                progressPath.addRoundRect(rectF, progressHeight /2, progressHeight /2, Path.Direction.CW);
             }
         }else{
-            canvas.drawRect(rectF,progressPaint);
+//            canvas.drawRect(rectF,progressPaint);
+            progressPath.addRect(rectF, Path.Direction.CW);
         }
+
+        resultPath.op(progressPath, Path.Op.INTERSECT);
+        canvas.drawPath(resultPath,progressPaint);
     }
 
 

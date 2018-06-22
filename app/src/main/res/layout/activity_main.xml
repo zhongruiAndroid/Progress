@@ -26,17 +26,14 @@
     />
     <com.github.progress.MyProgress
         android:id="@+id/mp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_margin="20dp"
         app:maxProgress="100"
         app:progress="50"
-        app:viewWidth="200dp"
-        app:viewHeight="20dp"
         app:borderColor="@color/green"
-        app:allInterval="4dp"
-        app:progressColor="@color/blue_00"
         app:bgColor="@color/white"
+        app:radius="20dp"
         />
     <SeekBar
         android:layout_width="match_parent"

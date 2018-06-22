@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.3"
     defaultConfig {
         applicationId "com.test.progress"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
