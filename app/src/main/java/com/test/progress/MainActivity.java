@@ -1,7 +1,11 @@
 package com.test.progress;
 
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mp.setProgress(100);
+                Log.i("","===" + mp.getViewWidth() + "===" + mp.getViewHeight());
+                LinearGradient linearGradient = new LinearGradient(-mp.getViewWidth()/2,-mp.getViewHeight()/2,mp.getViewWidth()/2,mp.getViewHeight()/2,
+                        new int[]{ContextCompat.getColor(MainActivity.this,R.color.green),
+                                ContextCompat.getColor(MainActivity.this,R.color.blue)},
+                        new float[]{0f,1},
+                        Shader.TileMode.MIRROR);
+                mp.setProgressShader(linearGradient);
+                mp.complete();
             }
         });
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -45,5 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 }

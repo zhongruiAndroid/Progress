@@ -9,9 +9,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -54,6 +56,9 @@ public class MyProgress extends View{
     private float maxProgress =100;
     private int angle=0;
     private int duration=1200;
+    private Shader borderShader;
+    private Shader bgShader;
+    private Shader progressShader;
 
 
     private final String def_borderColor="#239936";
@@ -179,7 +184,11 @@ public class MyProgress extends View{
         }
         initPaint();
     }
-
+    public void Log(String log) {
+        if(BuildConfig.DEBUG||true){
+            Log.i("MyProgress===", log);
+        }
+    }
     private void initPaint() {
         borderPaint =new Paint(Paint.ANTI_ALIAS_FLAG);
         borderPaint.setColor(borderColor);
@@ -214,7 +223,11 @@ public class MyProgress extends View{
     }
     private void drawBorder(Canvas canvas) {
         RectF rectF=new RectF(-viewWidth/2,-viewHeight/2, viewWidth/2, viewHeight /2);
-
+        if(borderShader!=null){
+            borderPaint.setShader(borderShader);
+        }else{
+            borderPaint.setShader(null);
+        }
         if(isRound){
             if(radius>0){
                 canvas.drawRoundRect(rectF, radius,radius,borderPaint);
@@ -226,6 +239,12 @@ public class MyProgress extends View{
         }
     }
     private void drawBg(Canvas canvas) {
+        if(bgShader!=null){
+            bgPaint.setShader(bgShader);
+        }else{
+            bgPaint.setShader(null);
+        }
+
         RectF rectF=new RectF(-viewWidth/2,-viewHeight/2, viewWidth/2, viewHeight /2);
         resultPath.reset();
         if(isRound){
@@ -260,6 +279,14 @@ public class MyProgress extends View{
             progressWidth=viewWidth-leftOffset-rightOffset;
             progressHeight=viewHeight-topInterval-bottomInterval;
         }
+
+        if(progressShader!=null){
+            progressPaint.setShader(progressShader);
+        }else{
+            progressPaint.setShader(null);
+        }
+
+
         RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*progress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
 
         progressPath.reset();
@@ -462,5 +489,29 @@ public class MyProgress extends View{
 
     public void setInterpolator(TimeInterpolator interpolator) {
         this.interpolator = interpolator;
+    }
+
+    public Shader getBorderShader() {
+        return borderShader;
+    }
+
+    public void setBorderShader(Shader borderShader) {
+        this.borderShader = borderShader;
+    }
+
+    public Shader getBgShader() {
+        return bgShader;
+    }
+
+    public void setBgShader(Shader bgShader) {
+        this.bgShader = bgShader;
+    }
+
+    public Shader getProgressShader() {
+        return progressShader;
+    }
+
+    public void setProgressShader(Shader progressShader) {
+        this.progressShader = progressShader;
     }
 }
