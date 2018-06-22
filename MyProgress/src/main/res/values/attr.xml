@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MyProgress">
+        <attr name="viewWidth" format="dimension"></attr>
+        <attr name="viewHeight" format="dimension"></attr>
         <attr name="bgColor" format="color"></attr>
         <attr name="borderColor" format="color"></attr>
         <attr name="borderWidth" format="dimension"></attr>

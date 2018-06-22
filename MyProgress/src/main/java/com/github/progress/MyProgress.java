@@ -17,6 +17,8 @@ import android.view.ViewGroup;
  */
 
 public class MyProgress extends View{
+    private int viewWidth;
+    private int viewHeight;
     private int bgColor;
     private int borderColor;
     private float borderWidth=4;
@@ -216,7 +218,7 @@ public class MyProgress extends View{
         return progressColor;
     }
 
-    public void setProgressColor(@ColorInt int progressColor) {
+    public void setProgressColor( int progressColor) {
         this.progressColor = progressColor;
     }
 
@@ -302,4 +304,27 @@ public class MyProgress extends View{
         this.angle = angle;
     }
 
+    public int getViewWidth() {
+        return viewWidth;
+    }
+
+    public void setViewWidth(int viewWidth) {
+        this.viewWidth = viewWidth;
+    }
+
+    public int getViewHeight() {
+        return viewHeight;
+    }
+
+    public void setViewHeight(int viewHeight) {
+        this.viewHeight = viewHeight;
+    }
+
+    public int getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(int bgColor) {
+        this.bgColor = bgColor;
+    }
 }
