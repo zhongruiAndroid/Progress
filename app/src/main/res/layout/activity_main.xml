@@ -31,11 +31,26 @@
         android:layout_margin="20dp"
         app:maxProgress="100"
         app:progress="50"
+
         />
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:max="100"
         android:id="@+id/seekbar"
+        />
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="0"
+        android:gravity="center"
+        />
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="100"
+        android:gravity="center"
         />
 </LinearLayout>

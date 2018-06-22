@@ -11,7 +11,6 @@ import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -22,7 +21,6 @@ import android.view.animation.DecelerateInterpolator;
 
 public class MyProgress extends View{
     private OnProgressInter onProgressInter;
-
     public interface OnProgressInter {
         void progress(float progress, float max);
     }
@@ -37,9 +35,7 @@ public class MyProgress extends View{
             onProgressInter.progress(progress,max);
         }
     }
-    //进度条border长度
     private float viewWidth;
-    //进度条border高度
     private float viewHeight;
     private int bgColor;
     private int borderColor;
@@ -56,14 +52,7 @@ public class MyProgress extends View{
     private float progress=30;
     private float maxProgress =100;
     private int angle=0;
-    private int duration=1000;
-
-    //进度条长度
-    private float progressFullWidth;
-    //进度条高度
-    private float progressFullHeight;
-
-    private float progressNowWidth;
+    private int duration=1200;
 
 
     private final String def_borderColor="#239936";
@@ -118,7 +107,7 @@ public class MyProgress extends View{
         maxProgress =typedArray.getFloat(R.styleable.MyProgress_maxProgress,100);
         progress=typedArray.getFloat(R.styleable.MyProgress_progress,30);
         angle=typedArray.getInt(R.styleable.MyProgress_angle,0);
-        duration=typedArray.getInt(R.styleable.MyProgress_duration,1000);
+        duration=typedArray.getInt(R.styleable.MyProgress_duration,1200);
 
 
         typedArray.recycle();
@@ -179,24 +168,7 @@ public class MyProgress extends View{
         }else if(viewHeight!=0){
             viewWidth=getWidth()-borderWidth;
         }
-
-        setProgressWidthAndHeight();
-
         initPaint();
-    }
-
-    //获取进度条宽高
-    private void setProgressWidthAndHeight() {
-        progressFullWidth = viewWidth;
-        progressFullHeight = viewHeight;
-        if(allInterval>0){
-            progressFullWidth =viewWidth-allInterval*2;
-            progressFullHeight =viewHeight-allInterval*2;
-        }else{
-            progressFullWidth =viewWidth-leftInterval-rightInterval;
-            progressFullHeight =viewHeight-topInterval-bottomInterval;
-        }
-        progressNowWidth=progress*progressFullWidth/maxProgress;
     }
 
     private void initPaint() {
@@ -257,27 +229,31 @@ public class MyProgress extends View{
         }
     }
 
-
-
     private void drawProgress(Canvas canvas) {
+        float progressWidth=viewWidth;
+        float progressHeight=viewHeight;
         float leftOffset=leftInterval;
         float topOffset=topInterval;
         float rightOffset=rightInterval;
         float bottomOffset=bottomInterval;
         if(allInterval>0){
+            progressWidth=viewWidth-allInterval*2;
+            progressHeight=viewHeight-allInterval*2;
             leftOffset=allInterval;
             topOffset=allInterval;
             rightOffset=allInterval;
             bottomOffset=allInterval;
+        }else{
+            progressWidth=viewWidth-leftOffset-rightOffset;
+            progressHeight=viewHeight-topInterval-bottomInterval;
         }
-        //progressFullWidth*progress/ maxProgress
-        RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressNowWidth -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
+        RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*progress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
 
         if(isRound){
             if(radius>0){
                 canvas.drawRoundRect(rectF,radius, radius,progressPaint);
             }else{
-                canvas.drawRoundRect(rectF, progressFullHeight /2, progressFullHeight /2,progressPaint);
+                canvas.drawRoundRect(rectF, progressHeight /2, progressHeight /2,progressPaint);
             }
         }else{
             canvas.drawRect(rectF,progressPaint);
@@ -316,7 +292,6 @@ public class MyProgress extends View{
 
     public void setAllInterval(int allInterval) {
         this.allInterval = allInterval;
-        setProgressWidthAndHeight();
     }
 
     public int getLeftInterval() {
@@ -325,7 +300,6 @@ public class MyProgress extends View{
 
     public void setLeftInterval(int leftInterval) {
         this.leftInterval = leftInterval;
-        setProgressWidthAndHeight();
     }
 
     public int getTopInterval() {
@@ -334,7 +308,6 @@ public class MyProgress extends View{
 
     public void setTopInterval(int topInterval) {
         this.topInterval = topInterval;
-        setProgressWidthAndHeight();
     }
 
     public int getRightInterval() {
@@ -343,7 +316,6 @@ public class MyProgress extends View{
 
     public void setRightInterval(int rightInterval) {
         this.rightInterval = rightInterval;
-        setProgressWidthAndHeight();
     }
 
     public int getBottomInterval() {
@@ -388,7 +360,7 @@ public class MyProgress extends View{
         setProgress(progress,showAnimation);
     }
     public void setProgress(float progress, boolean useAnimation) {
-        float beforeProgress=this.progressNowWidth;
+        float beforeProgress=this.progress;
         if(progress> maxProgress){
             this.progress= maxProgress;
         }else if(progress<0){
@@ -397,14 +369,11 @@ public class MyProgress extends View{
             this.progress = progress;
         }
         if(useAnimation){
-            float scaleWidth=progressFullWidth *progress/ maxProgress;
-            ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,scaleWidth);
+            ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,progress);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    MyProgress.this.progressNowWidth= (float) animation.getAnimatedValue();
-                    MyProgress.this.progress=MyProgress.this.progressNowWidth/progressFullWidth*maxProgress;
-                    Log.e("==",MyProgress.this.progress+"===scaleWidth=" + MyProgress.this.progressNowWidth);
+                    MyProgress.this.progress= (float) animation.getAnimatedValue();
                     invalidate();
                     setNowProgress(MyProgress.this.progress,MyProgress.this.maxProgress);
                 }
