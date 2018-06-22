@@ -190,7 +190,7 @@ public class MyProgress extends View{
 
 
         progressPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        progressPaint.setColor(borderColor);
+        progressPaint.setColor(progressColor);
         progressPaint.setStyle(Paint.Style.FILL);
 
     }

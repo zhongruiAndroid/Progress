@@ -16,14 +16,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-<!--<com.github.progress.MyProgress
+<com.github.progress.MyProgress
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
     app:borderWidth="4dp"
     android:background="@color/colorAccent"
     app:allInterval="10dp"
-    />-->
+    />
     <com.github.progress.MyProgress
         android:id="@+id/mp"
         android:layout_width="wrap_content"
@@ -31,9 +31,12 @@
         android:layout_margin="20dp"
         app:maxProgress="100"
         app:progress="50"
-        app:angle="0"
         app:viewWidth="200dp"
-        app:viewHeight="30dp"
+        app:viewHeight="20dp"
+        app:borderColor="@color/green"
+        app:allInterval="4dp"
+        app:progressColor="@color/blue_00"
+        app:bgColor="@color/white"
         />
     <SeekBar
         android:layout_width="match_parent"
