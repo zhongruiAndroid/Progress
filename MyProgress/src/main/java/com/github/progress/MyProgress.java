@@ -17,8 +17,8 @@ import android.view.ViewGroup;
  */
 
 public class MyProgress extends View{
-    private int viewWidth;
-    private int viewHeight;
+    private float viewWidth=300;
+    private float viewHeight=20;
     private int bgColor;
     private int borderColor;
     private float borderWidth=4;
@@ -38,8 +38,6 @@ public class MyProgress extends View{
     private final String def_borderColor="#239936";
     private final String def_progressColor=def_borderColor;
 
-    private float borderViewWidth;
-    private float borderViewHeight;
 
     private float progressViewWidth;
     private float progressViewHeight;
@@ -74,6 +72,8 @@ public class MyProgress extends View{
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyProgress);
 
+        viewWidth=  typedArray.getDimension(R.styleable.MyProgress_viewWidth,300);
+        viewHeight=  typedArray.getDimension(R.styleable.MyProgress_viewHeight,20);
         bgColor=typedArray.getColor(R.styleable.MyProgress_bgColor,Color.parseColor("#ffffff"));
         borderColor=typedArray.getColor(R.styleable.MyProgress_borderColor,Color.parseColor(def_borderColor));
         borderWidth=  typedArray.getDimension(R.styleable.MyProgress_borderWidth,1);
@@ -100,8 +100,8 @@ public class MyProgress extends View{
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        int mWidth =400+getPaddingLeft() + getPaddingRight();
-        int mHeight = 20+getPaddingTop()+getPaddingBottom();
+        int mWidth = (int) (viewWidth+borderWidth);
+        int mHeight = (int) (viewHeight+borderWidth);
         if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT&&getLayoutParams().height==ViewGroup.LayoutParams.WRAP_CONTENT){
             setMeasuredDimension(mWidth,mHeight);
         }else if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT){
@@ -116,8 +116,6 @@ public class MyProgress extends View{
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        borderViewWidth = w - getPaddingLeft() - getPaddingRight()-borderWidth;
-        borderViewHeight = h-getPaddingTop()-getPaddingBottom()-borderWidth;
 
         initPaint();
     }
@@ -129,7 +127,7 @@ public class MyProgress extends View{
         borderPaint.setStrokeWidth(borderWidth);
 
 
-        bgPaint  =new Paint(Paint.ANTI_ALIAS_FLAG);
+        bgPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setColor(bgColor);
         bgPaint.setStyle(Paint.Style.FILL);
 
@@ -143,60 +141,62 @@ public class MyProgress extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.translate(getPaddingLeft()+borderWidth/2,getHeight()/2);
+        float scaleAngle=angle%360;
+        canvas.translate(getWidth()/2,getHeight()/2);
+        if(scaleAngle>0){
+            canvas.rotate(scaleAngle);
+        }
         drawBg(canvas);
         drawBorder(canvas);
         drawProgress(canvas);
     }
+    private void drawBorder(Canvas canvas) {
+        RectF rectF=new RectF(-viewWidth/2,-viewHeight/2, viewWidth/2, viewHeight /2);
 
-    private void drawBg(Canvas canvas) {
-        RectF rectF=new RectF(0,-borderViewHeight /2, borderViewWidth, borderViewHeight /2);
         if(isRound){
-            canvas.drawRoundRect(rectF, borderViewHeight /2, borderViewHeight /2,bgPaint);
+            canvas.drawRoundRect(rectF, viewHeight /2, viewHeight /2,borderPaint);
+        }else{
+            canvas.drawRect(rectF,borderPaint);
+        }
+    }
+    private void drawBg(Canvas canvas) {
+        RectF rectF=new RectF(-viewWidth/2,-viewHeight/2, viewWidth/2, viewHeight /2);
+        if(isRound){
+            canvas.drawRoundRect(rectF, viewHeight /2, viewHeight /2,bgPaint);
         }else{
             canvas.drawRect(rectF,bgPaint);
         }
     }
 
     private void drawProgress(Canvas canvas) {
-        float progressWidth=borderViewWidth;
-        float progressHeight=borderViewHeight;
+        float progressWidth=viewWidth;
+        float progressHeight=viewHeight;
         float leftOffset=leftInterval;
         float topOffset=topInterval;
         float rightOffset=rightInterval;
         float bottomOffset=bottomInterval;
         if(allInterval>0){
-            progressWidth=borderViewWidth-allInterval*2;
-            progressHeight=borderViewHeight-allInterval*2;
+            progressWidth=viewWidth-allInterval*2;
+            progressHeight=viewHeight-allInterval*2;
             leftOffset=allInterval;
             topOffset=allInterval;
             rightOffset=allInterval;
             bottomOffset=allInterval;
         }else{
-            progressWidth=borderViewWidth-leftInterval-rightInterval;
-            progressHeight=borderViewHeight-topInterval-bottomInterval;
+            progressWidth=viewWidth-leftOffset-rightOffset;
+            progressHeight=viewHeight-topInterval-bottomInterval;
         }
 
-        RectF rectF=new RectF(leftOffset,-borderViewHeight /2+topOffset,(borderViewWidth-rightOffset)*progress/max, borderViewHeight /2-bottomOffset);
+        RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*progress/max-viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
 
-        canvas.save();
         if(isRound){
             canvas.drawRoundRect(rectF, progressHeight /2, progressHeight /2,progressPaint);
         }else{
             canvas.drawRect(rectF,progressPaint);
         }
-        canvas.restore();
     }
 
-    private void drawBorder(Canvas canvas) {
-        RectF rectF=new RectF(0,-borderViewHeight /2, borderViewWidth, borderViewHeight /2);
 
-        if(isRound){
-            canvas.drawRoundRect(rectF, borderViewHeight /2, borderViewHeight /2,borderPaint);
-        }else{
-            canvas.drawRect(rectF,borderPaint);
-        }
-    }
 
     public int getBorderColor() {
         return borderColor;
@@ -304,19 +304,19 @@ public class MyProgress extends View{
         this.angle = angle;
     }
 
-    public int getViewWidth() {
+    public float getViewWidth() {
         return viewWidth;
     }
 
-    public void setViewWidth(int viewWidth) {
+    public void setViewWidth(float viewWidth) {
         this.viewWidth = viewWidth;
     }
 
-    public int getViewHeight() {
+    public float getViewHeight() {
         return viewHeight;
     }
 
-    public void setViewHeight(int viewHeight) {
+    public void setViewHeight(float viewHeight) {
         this.viewHeight = viewHeight;
     }
 

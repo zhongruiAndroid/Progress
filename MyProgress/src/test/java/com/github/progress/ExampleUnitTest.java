@@ -21,4 +21,11 @@ public class ExampleUnitTest {
         int c=130;
         System.out.println(b*a/c);
     }
+    @Test
+    public void d() throws Exception {
+        System.out.println(0%360);
+        System.out.println(1%360);
+        System.out.println(360%360);
+        System.out.println(367%360);
+    }
 }

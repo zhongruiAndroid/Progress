@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 <com.github.progress.MyProgress
     android:layout_width="wrap_content"
-    android:layout_height="30dp"
+    android:layout_height="wrap_content"
     android:layout_margin="20dp"
     app:borderWidth="4dp"
     android:background="@color/colorAccent"
@@ -26,12 +26,13 @@
     />
     <com.github.progress.MyProgress
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:layout_margin="20dp"
         app:borderWidth="4dp"
-        android:padding="20dp"
         android:background="@color/colorAccent"
         app:max="100"
-        app:progress="5"
+        app:progress="50"
+        app:viewWidth="200dp"
+        app:viewHeight="80dp"
         />
 </LinearLayout>
