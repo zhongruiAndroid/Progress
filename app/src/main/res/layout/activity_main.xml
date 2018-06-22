@@ -25,16 +25,23 @@
     app:allInterval="10dp"
     />
     <com.github.progress.MyProgress
+        android:id="@+id/mp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="20dp"
         app:borderWidth="4dp"
         android:background="@color/colorAccent"
-        app:max="100"
+        app:maxProgress="100"
         app:progress="50"
-        app:viewWidth="200dp"
+        app:viewWidth="300dp"
         app:viewHeight="80dp"
         app:isRound="true"
         app:radius="20dp"
+        />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:max="100"
+        android:id="@+id/seekbar"
         />
 </LinearLayout>
