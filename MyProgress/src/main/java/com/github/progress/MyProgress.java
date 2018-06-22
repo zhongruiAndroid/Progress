@@ -138,6 +138,12 @@ public class MyProgress extends View{
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         int mWidth =  400;
         int mHeight = 30;
+        if(viewWidth+borderWidth>mWidth){
+            mWidth= (int) (viewWidth+borderWidth);
+        }
+        if(viewHeight+borderWidth>mHeight){
+            mHeight= (int) (viewHeight+borderWidth);
+        }
         if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT&&getLayoutParams().height==ViewGroup.LayoutParams.WRAP_CONTENT){
             setMeasuredDimension(mWidth,mHeight);
         }else if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT){
@@ -163,9 +169,9 @@ public class MyProgress extends View{
                 viewWidth=300;
                 viewHeight=20;
             }
-        }else if(viewWidth!=0){
+        }else if(viewHeight==0){
             viewHeight=getHeight()-borderWidth;
-        }else if(viewHeight!=0){
+        }else if(viewWidth==0){
             viewWidth=getWidth()-borderWidth;
         }
         initPaint();
