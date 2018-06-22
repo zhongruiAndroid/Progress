@@ -1,5 +1,6 @@
 package com.github.progress;
 
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -35,10 +36,8 @@ public class MyProgress extends View{
             onProgressInter.progress(progress,max);
         }
     }
-    private float viewWidth=300;
-    //这个宽度用于逻辑计算，主要让动画更平滑
-    private float viewScaleWidth=viewWidth*10;
-    private float viewHeight=20;
+    private float viewWidth;
+    private float viewHeight;
     private int bgColor;
     private int borderColor;
     private float borderWidth=4;
@@ -60,7 +59,7 @@ public class MyProgress extends View{
     private final String def_borderColor="#239936";
     private final String def_progressColor=def_borderColor;
 
-
+    private TimeInterpolator interpolator =new DecelerateInterpolator();
 
     private Paint bgPaint;
     private Paint borderPaint;
@@ -92,11 +91,11 @@ public class MyProgress extends View{
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyProgress);
 
-        viewWidth=  typedArray.getDimension(R.styleable.MyProgress_viewWidth,300);
-        viewHeight=  typedArray.getDimension(R.styleable.MyProgress_viewHeight,20);
+        viewWidth=  typedArray.getDimension(R.styleable.MyProgress_viewWidth,0);
+        viewHeight=  typedArray.getDimension(R.styleable.MyProgress_viewHeight,0);
         bgColor=typedArray.getColor(R.styleable.MyProgress_bgColor,Color.parseColor("#ffffff"));
         borderColor=typedArray.getColor(R.styleable.MyProgress_borderColor,Color.parseColor(def_borderColor));
-        borderWidth=  typedArray.getDimension(R.styleable.MyProgress_borderWidth,1);
+        borderWidth=  typedArray.getDimension(R.styleable.MyProgress_borderWidth,4);
         progressColor=typedArray.getColor(R.styleable.MyProgress_progressColor,borderColor);
         allInterval=(int)typedArray.getDimension(R.styleable.MyProgress_allInterval,0);
         leftInterval=(int)typedArray.getDimension(R.styleable.MyProgress_leftInterval,0);
@@ -111,17 +110,35 @@ public class MyProgress extends View{
         angle=typedArray.getInt(R.styleable.MyProgress_angle,0);
         duration=typedArray.getInt(R.styleable.MyProgress_duration,1000);
 
+
         typedArray.recycle();
 
+    }
+    private boolean isHorizontal(int angle){
+        if(angle%180==0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private boolean isVertical(int angle){
+        if(isHorizontal(angle)){
+            return false;
+        }else{
+            if(angle%90==0){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        int mWidth = (int) (viewWidth+borderWidth);
-        int mHeight = (int) (viewHeight+borderWidth);
+        int mWidth =  400;
+        int mHeight = 30;
         if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT&&getLayoutParams().height==ViewGroup.LayoutParams.WRAP_CONTENT){
             setMeasuredDimension(mWidth,mHeight);
         }else if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT){
@@ -136,7 +153,22 @@ public class MyProgress extends View{
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        viewScaleWidth=viewWidth*10;
+        if(viewWidth==0&&viewHeight==0){
+            if(isHorizontal(angle)){
+                viewWidth=getWidth()-borderWidth;
+                viewHeight=getHeight()-borderWidth;
+            }else if(isVertical(angle)){
+                viewWidth=getHeight()-borderWidth;
+                viewHeight=getWidth()-borderWidth;
+            }else{
+                viewWidth=300;
+                viewHeight=20;
+            }
+        }else if(viewWidth!=0){
+            viewHeight=getHeight()-borderWidth;
+        }else if(viewHeight!=0){
+            viewWidth=getWidth()-borderWidth;
+        }
         initPaint();
     }
 
@@ -167,7 +199,9 @@ public class MyProgress extends View{
             canvas.rotate(scaleAngle);
         }
         drawBg(canvas);
-        drawBorder(canvas);
+        if(borderWidth>0){
+            drawBorder(canvas);
+        }
         drawProgress(canvas);
     }
     private void drawBorder(Canvas canvas) {
@@ -328,8 +362,7 @@ public class MyProgress extends View{
         setProgress(progress,showAnimation);
     }
     public void setProgress(float progress, boolean useAnimation) {
-        float beforeProgress=this.progress*viewScaleWidth/maxProgress;
-        this.progress = progress;
+        float beforeProgress=this.progress;
         if(progress> maxProgress){
             this.progress= maxProgress;
         }else if(progress<0){
@@ -338,19 +371,17 @@ public class MyProgress extends View{
             this.progress = progress;
         }
         if(useAnimation){
-            float scaleWidth=progress*viewScaleWidth/maxProgress;
-            ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,scaleWidth);
+            ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,progress);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    float scaleWidth = (float) animation.getAnimatedValue();
-                    Log.e("==","===scaleWidth=" + scaleWidth);
-                    MyProgress.this.progress=scaleWidth*maxProgress/viewScaleWidth;
+                    MyProgress.this.progress= (float) animation.getAnimatedValue();
+                    Log.e("==","===scaleWidth=" + MyProgress.this.progress);
                     invalidate();
                     setNowProgress(MyProgress.this.progress,MyProgress.this.maxProgress);
                 }
             });
-            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.setInterpolator(interpolator);
             valueAnimator.setDuration(duration);
             valueAnimator.start();
         }else{
@@ -405,5 +436,13 @@ public class MyProgress extends View{
 
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+
+    public TimeInterpolator getInterpolator() {
+        return interpolator;
+    }
+
+    public void setInterpolator(TimeInterpolator interpolator) {
+        this.interpolator = interpolator;
     }
 }
