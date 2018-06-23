@@ -25,7 +25,7 @@ import android.view.animation.DecelerateInterpolator;
 public class MyProgress extends View{
     private OnProgressInter onProgressInter;
     public interface OnProgressInter {
-        void progress(float progress, float max);
+        void progress(float scaleProgress,float progress, float max);
     }
     public OnProgressInter getOnProgressInter() {
         return onProgressInter;
@@ -33,9 +33,9 @@ public class MyProgress extends View{
     public void setOnProgressInter(OnProgressInter onProgressInter) {
         this.onProgressInter = onProgressInter;
     }
-    private void setNowProgress(float progress, float max) {
+    private void setNowProgress(float scaleProgress,float progress, float max) {
         if(onProgressInter !=null){
-            onProgressInter.progress(progress,max);
+            onProgressInter.progress(scaleProgress,progress,max);
         }
     }
     private float viewWidth;
@@ -53,6 +53,8 @@ public class MyProgress extends View{
     private boolean isRound=true;
     private float radius=0;
     private float progress=30;
+    //用于动画计算
+    private float scaleProgress=progress;
     private float maxProgress =100;
     private int angle=0;
     private int duration=1200;
@@ -117,7 +119,7 @@ public class MyProgress extends View{
         angle=typedArray.getInt(R.styleable.MyProgress_angle,0);
         duration=typedArray.getInt(R.styleable.MyProgress_duration,1200);
 
-
+        scaleProgress=progress;
         typedArray.recycle();
 
     }
@@ -287,7 +289,7 @@ public class MyProgress extends View{
         }
 
 
-        RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*progress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
+        RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*scaleProgress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
 
         progressPath.reset();
 
@@ -421,17 +423,18 @@ public class MyProgress extends View{
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    MyProgress.this.progress= (float) animation.getAnimatedValue();
+                    MyProgress.this.scaleProgress= (float) animation.getAnimatedValue();
                     invalidate();
-                    setNowProgress(MyProgress.this.progress,MyProgress.this.maxProgress);
+                    setNowProgress(MyProgress.this.scaleProgress,MyProgress.this.progress,MyProgress.this.maxProgress);
                 }
             });
             valueAnimator.setInterpolator(interpolator);
             valueAnimator.setDuration(duration);
             valueAnimator.start();
         }else{
+            MyProgress.this.scaleProgress=this.progress;
             invalidate();
-            setNowProgress(this.progress,this.maxProgress);
+            setNowProgress(MyProgress.this.scaleProgress,this.progress,this.maxProgress);
         }
     }
 

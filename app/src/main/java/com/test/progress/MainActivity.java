@@ -22,16 +22,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         seekbar= (SeekBar) findViewById(R.id.seekbar);
         mp= (MyProgress) findViewById(R.id.mp);
+        mp.setOnProgressInter(new MyProgress.OnProgressInter() {
+            @Override
+            public void progress(float scaleProgress, float progress, float max) {
+
+                Log.i("======","===" + scaleProgress + "===" + progress+"=="+max);
+            }
+        });
         findViewById(R.id.tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setProgress(0);
+                mp.setProgress(0,false);
             }
         });
         findViewById(R.id.tv2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setProgress(100);
+                mp.setProgress(100,false);
                 Log.i("","===" + mp.getViewWidth() + "===" + mp.getViewHeight());
                 LinearGradient linearGradient = new LinearGradient(-mp.getViewWidth()/2,-mp.getViewHeight()/2,mp.getViewWidth()/2,mp.getViewHeight()/2,
                         new int[]{ContextCompat.getColor(MainActivity.this,R.color.green),
