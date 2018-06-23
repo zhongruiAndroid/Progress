@@ -18,11 +18,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 <com.github.progress.MyProgress
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:layout_margin="20dp"
-    app:borderWidth="4dp"
-    android:background="@color/colorAccent"
-    app:allInterval="10dp"
+    android:background="@color/blue_00"
+    app:bgColor="@color/white"
     />
     <com.github.progress.MyProgress
         android:id="@+id/mp"

@@ -64,6 +64,7 @@ public class MyProgress extends View{
 
 
     private final String def_borderColor="#239936";
+    private final String def_bgColor="#00000000";
     private final String def_progressColor=def_borderColor;
 
     private TimeInterpolator interpolator =new DecelerateInterpolator();
@@ -71,8 +72,8 @@ public class MyProgress extends View{
     private Paint bgPaint;
     private Paint borderPaint;
     private Paint progressPaint;
-    private Path progressPath=new Path();
-    private Path resultPath=new Path();
+    private Path progressPath;
+    private Path resultPath ;
 
     public MyProgress(Context context) {
         super(context);
@@ -90,7 +91,7 @@ public class MyProgress extends View{
     }
 
     private void init(AttributeSet attrs) {
-        bgColor= Color.parseColor("#ffffff");
+        bgColor= Color.parseColor(def_bgColor);
         borderColor= Color.parseColor(def_borderColor);
         progressColor= Color.parseColor(def_progressColor);
 
@@ -102,7 +103,7 @@ public class MyProgress extends View{
 
         viewWidth=  typedArray.getDimension(R.styleable.MyProgress_viewWidth,0);
         viewHeight=  typedArray.getDimension(R.styleable.MyProgress_viewHeight,0);
-        bgColor=typedArray.getColor(R.styleable.MyProgress_bgColor,Color.parseColor("#ffffff"));
+        bgColor=typedArray.getColor(R.styleable.MyProgress_bgColor,Color.parseColor(def_bgColor));
         borderColor=typedArray.getColor(R.styleable.MyProgress_borderColor,Color.parseColor(def_borderColor));
         borderWidth=  typedArray.getDimension(R.styleable.MyProgress_borderWidth,4);
         progressColor=typedArray.getColor(R.styleable.MyProgress_progressColor,borderColor);
@@ -184,6 +185,8 @@ public class MyProgress extends View{
         }else if(viewWidth==0){
             viewWidth=getWidth()-borderWidth;
         }
+        progressPath=new Path();
+        resultPath  =new Path();
         initPaint();
     }
     public void Log(String log) {
@@ -306,8 +309,8 @@ public class MyProgress extends View{
             progressPath.addRect(rectF, Path.Direction.CW);
         }
 
-        resultPath.op(progressPath, Path.Op.INTERSECT);
-        canvas.drawPath(resultPath,progressPaint);
+        progressPath.op(resultPath, Path.Op.INTERSECT);
+        canvas.drawPath(progressPath,progressPaint);
     }
 
 

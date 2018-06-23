@@ -32,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setProgress(0,false);
+                mp.setProgress(0);
             }
         });
         findViewById(R.id.tv2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setProgress(100,false);
+                mp.setProgress(100);
                 Log.i("","===" + mp.getViewWidth() + "===" + mp.getViewHeight());
                 LinearGradient linearGradient = new LinearGradient(-mp.getViewWidth()/2,-mp.getViewHeight()/2,mp.getViewWidth()/2,mp.getViewHeight()/2,
                         new int[]{ContextCompat.getColor(MainActivity.this,R.color.green),
