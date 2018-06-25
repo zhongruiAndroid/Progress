@@ -319,80 +319,90 @@ public class MyProgress extends View{
         return borderColor;
     }
 
-    public void setBorderColor(@ColorInt int borderColor) {
+    public MyProgress setBorderColor(@ColorInt int borderColor) {
         this.borderColor = borderColor;
+        return this;
     }
 
     public float getBorderWidth() {
         return borderWidth;
     }
 
-    public void setBorderWidth(float borderWidth) {
+    public MyProgress setBorderWidth(float borderWidth) {
         this.borderWidth = borderWidth;
+        return this;
     }
 
     public int getProgressColor() {
         return progressColor;
     }
 
-    public void setProgressColor( int progressColor) {
+    public MyProgress setProgressColor( int progressColor) {
         this.progressColor = progressColor;
+        return this;
     }
 
     public int getAllInterval() {
         return allInterval;
     }
 
-    public void setAllInterval(int allInterval) {
+    public MyProgress setAllInterval(int allInterval) {
         this.allInterval = allInterval;
+        return this;
     }
 
     public int getLeftInterval() {
         return leftInterval;
     }
 
-    public void setLeftInterval(int leftInterval) {
+    public MyProgress setLeftInterval(int leftInterval) {
         this.leftInterval = leftInterval;
+        return this;
     }
 
     public int getTopInterval() {
         return topInterval;
     }
 
-    public void setTopInterval(int topInterval) {
+    public MyProgress setTopInterval(int topInterval) {
         this.topInterval = topInterval;
+        return this;
     }
 
     public int getRightInterval() {
         return rightInterval;
     }
 
-    public void setRightInterval(int rightInterval) {
+    public MyProgress setRightInterval(int rightInterval) {
         this.rightInterval = rightInterval;
+        return this;
     }
 
     public int getBottomInterval() {
         return bottomInterval;
     }
 
-    public void setBottomInterval(int bottomInterval) {
+    public MyProgress setBottomInterval(int bottomInterval) {
         this.bottomInterval = bottomInterval;
+        return this;
     }
 
     public boolean isShowAnimation() {
         return showAnimation;
     }
 
-    public void setShowAnimation(boolean showAnimation) {
+    public MyProgress setShowAnimation(boolean showAnimation) {
         this.showAnimation = showAnimation;
+        return this;
     }
 
     public boolean isRound() {
         return isRound;
     }
 
-    public void setRound(boolean round) {
+    public MyProgress setRound(boolean round) {
         isRound = round;
+        return this;
     }
 
     public float getMaxProgress() {
@@ -401,18 +411,19 @@ public class MyProgress extends View{
     public void complete(){
         invalidate();
     }
-    public void setMaxProgress(float maxProgress) {
+    public MyProgress setMaxProgress(float maxProgress) {
         this.maxProgress = maxProgress;
+        return this;
     }
 
     public float getProgress() {
         return progress;
     }
 
-    public void setProgress(float progress) {
-        setProgress(progress,showAnimation);
+    public MyProgress setProgress(float progress) {
+        return setProgress(progress,showAnimation);
     }
-    public void setProgress(float progress, boolean useAnimation) {
+    public MyProgress setProgress(float progress, boolean useAnimation) {
         float beforeProgress=this.progress;
         if(progress> maxProgress){
             this.progress= maxProgress;
@@ -439,85 +450,96 @@ public class MyProgress extends View{
             invalidate();
             setNowProgress(MyProgress.this.scaleProgress,this.progress,this.maxProgress);
         }
+        return this;
     }
 
     public int getAngle() {
         return angle;
     }
 
-    public void setAngle(int angle) {
+    public MyProgress setAngle(int angle) {
         this.angle = angle;
+        return this;
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public MyProgress setDuration(int duration) {
         this.duration = duration;
+        return this;
     }
 
     public float getViewWidth() {
         return viewWidth;
     }
 
-    public void setViewWidth(float viewWidth) {
+    public MyProgress setViewWidth(float viewWidth) {
         this.viewWidth = viewWidth;
+        return this;
     }
 
     public float getViewHeight() {
         return viewHeight;
     }
 
-    public void setViewHeight(float viewHeight) {
+    public MyProgress setViewHeight(float viewHeight) {
         this.viewHeight = viewHeight;
+        return this;
     }
 
     public int getBgColor() {
         return bgColor;
     }
 
-    public void setBgColor(int bgColor) {
+    public MyProgress setBgColor(int bgColor) {
         this.bgColor = bgColor;
+        return this;
     }
 
     public float getRadius() {
         return radius;
     }
 
-    public void setRadius(float radius) {
+    public MyProgress setRadius(float radius) {
         this.radius = radius;
+        return this;
     }
 
     public TimeInterpolator getInterpolator() {
         return interpolator;
     }
 
-    public void setInterpolator(TimeInterpolator interpolator) {
+    public MyProgress setInterpolator(TimeInterpolator interpolator) {
         this.interpolator = interpolator;
+        return this;
     }
 
     public Shader getBorderShader() {
         return borderShader;
     }
 
-    public void setBorderShader(Shader borderShader) {
+    public MyProgress setBorderShader(Shader borderShader) {
         this.borderShader = borderShader;
+        return this;
     }
 
     public Shader getBgShader() {
         return bgShader;
     }
 
-    public void setBgShader(Shader bgShader) {
+    public MyProgress setBgShader(Shader bgShader) {
         this.bgShader = bgShader;
+        return this;
     }
 
     public Shader getProgressShader() {
         return progressShader;
     }
 
-    public void setProgressShader(Shader progressShader) {
+    public MyProgress setProgressShader(Shader progressShader) {
         this.progressShader = progressShader;
+        return this;
     }
 }
