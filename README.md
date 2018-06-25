@@ -31,20 +31,20 @@ Shader borderShader;
 Shader bgShader;
 //进度条颜色渐变
 Shader progressShader;
-//进度条动画插入器(默认为DecelerateInterpolator)
+//进度条动画插入器,建议在setProgress方法之前设置(默认为DecelerateInterpolator)
 TimeInterpolator interpolator
 
 //为进度条设置线性颜色渐变,起始坐标为view左上角,结束坐标为view右下角(注意view圆点坐标在view中心)
 LinearGradient linearGradient = new LinearGradient(
--myProgress.getViewWidth() / 2,
--myProgress.getViewHeight() / 2, 
-myProgress.getViewWidth() / 2, 
-myProgress.getViewHeight() / 2,
-ContextCompat.getColor(MainActivity.this, R.color.green),
-ContextCompat.getColor(MainActivity.this, R.color.blue),
-Shader.TileMode.MIRROR);
+                                -myProgress.getViewWidth() / 2,
+                                -myProgress.getViewHeight() / 2, 
+                                myProgress.getViewWidth() / 2, 
+                                myProgress.getViewHeight() / 2,
+                                ContextCompat.getColor(MainActivity.this, R.color.green),
+                                ContextCompat.getColor(MainActivity.this, R.color.blue),
+                                Shader.TileMode.MIRROR);
 
-myProgress.setProgressShader(linearGradient).complete();
+myProgress.setProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
 ```
 ### 注意:代码设置属性之后调用complete()才能生效
 #### 进度监听
