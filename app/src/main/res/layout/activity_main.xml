@@ -1,57 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.test.progress.MainActivity"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-<com.github.progress.MyProgress
-    android:layout_width="wrap_content"
-    android:layout_height="50dp"
-    android:layout_margin="20dp"
-    android:background="@color/blue_00"
-    app:bgColor="@color/white"
-    />
+        android:orientation="vertical"
+        >
     <com.github.progress.MyProgress
         android:id="@+id/mp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="20dp"
+        android:layout_height="250dp"
+        app:viewWidth="250dp"
+        app:viewHeight="30dp"
         app:maxProgress="100"
-        app:progress="50"
+        app:progress="10"
         app:borderColor="@color/green"
         app:bgColor="@color/white"
-        app:radius="20dp"
         />
-    <SeekBar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:max="100"
-        android:id="@+id/seekbar"
-        />
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:text="0"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:id="@+id/tv_progress0"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:text="进度:0"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tv_progress1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:text="进度:50"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tv_progress2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:text="进度:100"
+            android:gravity="center"
+            />
+        <CheckBox
+            android:id="@+id/cb_around"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="是否使用圆角"
+            android:checked="true"
+            android:textColor="@color/gray_66"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:gravity="center"
-        />
-    <TextView
-        android:id="@+id/tv2"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:text="100"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="view角度"
+            android:ems="4"
+            />
+
+        <SeekBar
+            android:id="@+id/sb_angle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="0"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:gravity="center"
-        />
-</LinearLayout>
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="view圆角"
+            android:ems="4"
+            />
+
+        <SeekBar
+            android:id="@+id/sb_round"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="100"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="左部边距"
+            android:ems="4"
+            />
+        <SeekBar
+            android:id="@+id/sb_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="0"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="顶部边距"
+            android:ems="4"
+            />
+        <SeekBar
+            android:id="@+id/sb_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="0"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="右部边距"
+            android:ems="4"
+            />
+        <SeekBar
+            android:id="@+id/sb_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="0"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="底部边距"
+            android:ems="4"
+            />
+        <SeekBar
+            android:id="@+id/sb_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="0"
+            />
+    </LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

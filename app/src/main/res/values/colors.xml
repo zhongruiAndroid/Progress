@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#18B4ED</color>
     <color name="colorPrimaryDark2">#18B4ED</color>
     <color name="colorPrimaryDark1">#87ceeb</color>
-    <color name="colorAccent">#848484</color>
+    <!--<color name="colorAccent">#848484</color>-->
+    <color name="colorAccent">#4ed3fd</color>
 
 
     <color name="theme_color">#3a92e9</color>
