@@ -48,8 +48,7 @@ public class MyProgress extends View{
     private int topInterval;
     private int rightInterval;
     private int bottomInterval;
-    private boolean showAnimation=true;
-    private boolean isRound=true;
+    private boolean useAnimation =true;
     private float radius=0;
     private float progress=30;
     //用于动画计算
@@ -111,8 +110,7 @@ public class MyProgress extends View{
         topInterval=(int)typedArray.getDimension(R.styleable.MyProgress_topInterval,0);
         rightInterval=(int)typedArray.getDimension(R.styleable.MyProgress_rightInterval,0);
         bottomInterval=(int)typedArray.getDimension(R.styleable.MyProgress_bottomInterval,0);
-        showAnimation=typedArray.getBoolean(R.styleable.MyProgress_showAnimation,true);
-        isRound=typedArray.getBoolean(R.styleable.MyProgress_isRound,true);
+        useAnimation =typedArray.getBoolean(R.styleable.MyProgress_useAnimation,true);
         radius=typedArray.getDimension(R.styleable.MyProgress_radius,0);
         maxProgress =typedArray.getFloat(R.styleable.MyProgress_maxProgress,100);
         progress=typedArray.getFloat(R.styleable.MyProgress_progress,30);
@@ -229,7 +227,7 @@ public class MyProgress extends View{
         }else{
             borderPaint.setShader(null);
         }
-        if(isRound){
+        if(radius>0){
 //            if(radius>0){
                 canvas.drawRoundRect(rectF, radius,radius,borderPaint);
 //            }else{
@@ -248,7 +246,7 @@ public class MyProgress extends View{
 
         RectF rectF=new RectF(-viewWidth/2,-viewHeight/2, viewWidth/2, viewHeight /2);
         resultPath.reset();
-        if(isRound){
+        if(radius>0){
 //            if(radius>0){
                 canvas.drawRoundRect(rectF, radius,radius,bgPaint);
                 resultPath.addRoundRect(rectF,radius, radius, Path.Direction.CW);
@@ -292,7 +290,7 @@ public class MyProgress extends View{
 
         progressPath.reset();
 
-        if(isRound){
+        if(radius>0){
 //            if(radius>0){
 // //               canvas.drawRoundRect(rectF,radius, radius,progressPaint);
                 progressPath.addRoundRect(rectF,radius, radius, Path.Direction.CW);
@@ -383,21 +381,12 @@ public class MyProgress extends View{
         return this;
     }
 
-    public boolean isShowAnimation() {
-        return showAnimation;
+    public boolean isUseAnimation() {
+        return useAnimation;
     }
 
-    public MyProgress setShowAnimation(boolean showAnimation) {
-        this.showAnimation = showAnimation;
-        return this;
-    }
-
-    public boolean isRound() {
-        return isRound;
-    }
-
-    public MyProgress setRound(boolean round) {
-        isRound = round;
+    public MyProgress setUseAnimation(boolean useAnimation) {
+        this.useAnimation = useAnimation;
         return this;
     }
 
@@ -417,7 +406,7 @@ public class MyProgress extends View{
     }
 
     public MyProgress setProgress(float progress) {
-        return setProgress(progress,showAnimation);
+        return setProgress(progress, useAnimation);
     }
     public MyProgress setProgress(float progress, boolean useAnimation) {
         float beforeProgress=this.progress;

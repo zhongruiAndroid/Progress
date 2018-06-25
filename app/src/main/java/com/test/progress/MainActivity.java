@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,8 +46,14 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(MainActivity.this, R.color.green),
                 ContextCompat.getColor(MainActivity.this, R.color.blue),
                 Shader.TileMode.MIRROR);
-        mp.setProgressShader(linearGradient);
+        mp.setProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
         mp.setBgColor(ContextCompat.getColor(context,R.color.white));
+        mp.setOnProgressInter(new MyProgress.OnProgressInter() {
+            @Override
+            public void progress(float scaleProgress, float progress, float max) {
+                Log.i("======",scaleProgress+"=="+progress+"==="+max);
+            }
+        });
 
         sb_round.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         cb_around.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mp.setRound(isChecked).setRadius(mp.getViewHeight()/2*sb_round.getProgress()/100).complete();
+                mp.setRadius(mp.getViewHeight()/2*sb_round.getProgress()/100).complete();
             }
         });
         sb_angle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
