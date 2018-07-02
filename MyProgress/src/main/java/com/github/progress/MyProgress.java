@@ -190,18 +190,13 @@ public class MyProgress extends View{
 
     private void initPaint() {
         borderPaint =new Paint(Paint.ANTI_ALIAS_FLAG);
-        borderPaint.setColor(borderColor);
         borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(borderWidth);
-
 
         bgPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        bgPaint.setColor(bgColor);
         bgPaint.setStyle(Paint.Style.FILL);
 
 
         progressPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        progressPaint.setColor(progressColor);
         progressPaint.setStyle(Paint.Style.FILL);
 
     }
@@ -209,6 +204,14 @@ public class MyProgress extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        borderPaint.setColor(borderColor);
+        borderPaint.setStrokeWidth(borderWidth);
+
+        bgPaint.setColor(bgColor);
+
+        progressPaint.setColor(progressColor);
+
+
         float scaleAngle=angle%360;
         canvas.translate(getWidth()/2,getHeight()/2);
         if(scaleAngle>0){
