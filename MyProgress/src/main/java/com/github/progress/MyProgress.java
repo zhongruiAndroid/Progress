@@ -336,6 +336,7 @@ public class MyProgress extends View{
 
     public MyProgress setProgressColor( int progressColor) {
         this.progressColor = progressColor;
+        this.progressShader=null;
         return this;
     }
 
