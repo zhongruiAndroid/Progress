@@ -292,7 +292,12 @@ public class MyProgress extends View{
         }
 
 
-        RectF rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*scaleProgress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
+        RectF rectF;
+        if(maxProgress<=0){
+            rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset,-viewWidth/2+leftOffset, viewHeight /2-bottomOffset);
+        }else{
+            rectF=new RectF(-viewWidth/2+leftOffset,-viewHeight/2+topOffset, (progressWidth*scaleProgress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset);
+        }
 
         progressPath.reset();
 

@@ -28,11 +28,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="20dp"
-        app:maxProgress="100"
         app:progress="50"
         app:borderColor="@color/green"
         app:bgColor="@color/white"
         app:radius="20dp"
+        app:maxProgress="0"
         />
     <SeekBar
         android:layout_width="match_parent"

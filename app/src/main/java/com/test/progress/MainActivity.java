@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         seekbar= (SeekBar) findViewById(R.id.seekbar);
         mp= (MyProgress) findViewById(R.id.mp);
+        Log.i("===",mp.getProgress()+"==="+mp.getMaxProgress());
         mp.setOnProgressInter(new MyProgress.OnProgressInter() {
             @Override
             public void progress(float scaleProgress, float progress, float max) {
