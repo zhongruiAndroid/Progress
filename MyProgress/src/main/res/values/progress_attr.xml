@@ -14,7 +14,7 @@
         <attr name="bottomInterval" format="dimension"></attr>
         <attr name="useAnimation" format="boolean"></attr>
         <attr name="maxProgress" format="integer"></attr>
-        <attr name="progress" format="integer"></attr>
+        <attr name="nowProgress" format="integer"></attr>
         <attr name="angle" format="integer"></attr>
         <attr name="duration" format="integer"></attr>
         <attr name="radius" format="dimension"></attr>
