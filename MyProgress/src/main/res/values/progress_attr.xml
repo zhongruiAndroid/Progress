@@ -12,10 +12,9 @@
         <attr name="topInterval" format="dimension"></attr>
         <attr name="rightInterval" format="dimension"></attr>
         <attr name="bottomInterval" format="dimension"></attr>
-        <attr name="showAnimation" format="boolean"></attr>
-        <attr name="isRound" format="boolean"></attr>
+        <attr name="useAnimation" format="boolean"></attr>
         <attr name="maxProgress" format="integer"></attr>
-        <attr name="progress" format="integer"></attr>
+        <attr name="nowProgress" format="integer"></attr>
         <attr name="angle" format="integer"></attr>
         <attr name="duration" format="integer"></attr>
         <attr name="radius" format="dimension"></attr>
