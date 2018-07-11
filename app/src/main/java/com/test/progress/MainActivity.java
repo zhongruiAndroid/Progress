@@ -15,7 +15,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.github.progress.MyProgress;
-import com.test.nowProgress.R;
 
 public class MainActivity extends AppCompatActivity {
     MyProgress mp;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(MainActivity.this, R.color.green),
                 ContextCompat.getColor(MainActivity.this, R.color.blue),
                 Shader.TileMode.MIRROR);
-        mp.setNowProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
+        mp.setProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
         mp.setBgColor(ContextCompat.getColor(context,R.color.white));
         mp.setOnProgressInter(new MyProgress.OnProgressInter() {
             @Override
@@ -102,19 +101,19 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tv_progress0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setNowProgress(0);
+                mp.setProgress(0);
             }
         });
         findViewById(R.id.tv_progress1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setNowProgress(50);
+                mp.setProgress(50);
             }
         });
         findViewById(R.id.tv_progress2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setNowProgress(100);
+                mp.setProgress(100);
             }
         });
 

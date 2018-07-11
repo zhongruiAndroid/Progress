@@ -13,14 +13,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-    <com.github.nowProgress.MyProgress
+    <com.github.progress.MyProgress
         android:id="@+id/mp"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         app:viewWidth="250dp"
         app:viewHeight="30dp"
         app:maxProgress="100"
-        app:nowProgress="10"
+        app:progress="10"
         app:borderColor="@color/green"
         app:bgColor="@color/white"
         />

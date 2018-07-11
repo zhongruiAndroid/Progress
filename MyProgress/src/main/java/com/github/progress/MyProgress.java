@@ -17,8 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import com.github.nowProgress.R;
-
 /**
  * Created by Administrator on 2018/6/21.
  */
@@ -34,7 +32,7 @@ public class MyProgress extends View{
     public void setOnProgressInter(OnProgressInter onProgressInter) {
         this.onProgressInter = onProgressInter;
     }
-    private void setNowProgress(float scaleProgress,float progress, float max) {
+    private void setProgressToInter(float scaleProgress,float progress, float max) {
         if(onProgressInter !=null){
             onProgressInter.progress(scaleProgress,progress,max);
         }
@@ -52,9 +50,9 @@ public class MyProgress extends View{
     private int bottomInterval;
     private boolean useAnimation =true;
     private float radius=0;
-    private float nowProgress =30;
+    private float progress =30;
     //用于动画计算
-    private float scaleProgress= nowProgress;
+    private float scaleProgress= progress;
     private float maxProgress =100;
     private int angle=0;
     private int duration=1200;
@@ -115,11 +113,21 @@ public class MyProgress extends View{
         useAnimation =typedArray.getBoolean(R.styleable.MyProgress_useAnimation,true);
         radius=typedArray.getDimension(R.styleable.MyProgress_radius,0);
         maxProgress =typedArray.getFloat(R.styleable.MyProgress_maxProgress,100);
-        nowProgress =typedArray.getFloat(R.styleable.MyProgress_nowProgress,30);
+        progress =typedArray.getFloat(R.styleable.MyProgress_progress,30);
         angle=typedArray.getInt(R.styleable.MyProgress_angle,0);
         duration=typedArray.getInt(R.styleable.MyProgress_duration,1200);
 
-        scaleProgress= nowProgress;
+
+        if(maxProgress<=0){
+            this.maxProgress=0;
+        }
+        if(progress> maxProgress){
+            this.progress = maxProgress;
+        }else if(progress<0){
+            this.progress =0;
+        }
+
+        scaleProgress= progress;
         typedArray.recycle();
 
     }
@@ -408,25 +416,29 @@ public class MyProgress extends View{
         invalidate();
     }
     public MyProgress setMaxProgress(float maxProgress) {
-        this.maxProgress = maxProgress;
+        if(maxProgress<=0){
+            this.maxProgress=0;
+        }else{
+            this.maxProgress = maxProgress;
+        }
         return this;
     }
 
-    public float getNowProgress() {
-        return nowProgress;
+    public float getProgress() {
+        return progress;
     }
 
-    public MyProgress setNowProgress(float nowProgress) {
-        return setProgress(nowProgress, useAnimation);
+    public MyProgress setProgress(float progress) {
+        return setProgress(progress, useAnimation);
     }
     public MyProgress setProgress(float progress, boolean useAnimation) {
-        float beforeProgress=this.nowProgress;
+        float beforeProgress=this.progress;
         if(progress> maxProgress){
-            this.nowProgress = maxProgress;
+            this.progress = maxProgress;
         }else if(progress<0){
-            this.nowProgress =0;
+            this.progress =0;
         }else{
-            this.nowProgress = progress;
+            this.progress = progress;
         }
         if(useAnimation){
             ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,progress);
@@ -435,16 +447,16 @@ public class MyProgress extends View{
                 public void onAnimationUpdate(ValueAnimator animation) {
                     MyProgress.this.scaleProgress= (float) animation.getAnimatedValue();
                     invalidate();
-                    setNowProgress(MyProgress.this.scaleProgress,MyProgress.this.nowProgress,MyProgress.this.maxProgress);
+                    setProgressToInter(MyProgress.this.scaleProgress,MyProgress.this.progress,MyProgress.this.maxProgress);
                 }
             });
             valueAnimator.setInterpolator(interpolator);
             valueAnimator.setDuration(duration);
             valueAnimator.start();
         }else{
-            MyProgress.this.scaleProgress=this.nowProgress;
+            MyProgress.this.scaleProgress=this.progress;
             invalidate();
-            setNowProgress(MyProgress.this.scaleProgress,this.nowProgress,this.maxProgress);
+            setProgressToInter(MyProgress.this.scaleProgress,this.progress,this.maxProgress);
         }
         return this;
     }

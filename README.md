@@ -10,7 +10,7 @@
 | borderColor    | color     | 进度条边框颜色                                                        |
 | borderWidth    | dimension | 进度条边框宽度                                                        |
 | progressColor  | color     | 进度条颜色                                                            |
-| nowProgress       | integer   | 进度条当前进度(默认为30)                                              |
+| progress       | integer   | 进度条当前进度(默认为30)                                              |
 | maxProgress    | integer   | 进度条最大值(默认为100)                                               |
 | angle          | integer   | 进度条旋转角度                                                        |
 | radius         | dimension | 进度条圆角大小(默认为viewHeight的一半,最大值不会超过viewHeight的一半) |
@@ -52,9 +52,9 @@ myProgress.setProgress(30).setMaxProgress(100).setProgressShader(linearGradient)
 MyProgress myProgress = (MyProgress) findViewById(R.id.myProgress);
 myProgress.setOnProgressInter(new MyProgress.OnProgressInter() {
   @Override
-    public void nowProgress(float scaleProgress, float nowProgress, float max) {
+    public void progress(float scaleProgress, float progress, float max) {
         //scaleProgress:动画执行时的进度
-        //nowProgress:设置的进度
+        //progress:设置的进度
         //max:进度条最大值
     }
 });
