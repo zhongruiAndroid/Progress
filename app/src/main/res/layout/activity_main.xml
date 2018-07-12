@@ -20,7 +20,7 @@
         app:viewWidth="250dp"
         app:viewHeight="30dp"
         app:maxProgress="100"
-        app:progress="10"
+        app:nowProgress="10"
         app:borderColor="@color/green"
         app:bgColor="@color/white"
         />

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(MainActivity.this, R.color.green),
                 ContextCompat.getColor(MainActivity.this, R.color.blue),
                 Shader.TileMode.MIRROR);
-        mp.setProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
+        mp.setNowProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
         mp.setBgColor(ContextCompat.getColor(context,R.color.white));
         mp.setOnProgressInter(new MyProgress.OnProgressInter() {
             @Override
@@ -101,19 +101,19 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tv_progress0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setProgress(0);
+                mp.setNowProgress(0);
             }
         });
         findViewById(R.id.tv_progress1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setProgress(50);
+                mp.setNowProgress(50);
             }
         });
         findViewById(R.id.tv_progress2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setProgress(100);
+                mp.setNowProgress(100);
             }
         });
 

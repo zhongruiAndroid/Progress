@@ -51,9 +51,9 @@ public class MyProgress extends View{
     private int bottomInterval;
     private boolean useAnimation =true;
     private float radius=0;
-    private float progress =30;
+    private float nowProgress =30;
     //用于动画计算
-    private float scaleProgress= progress;
+    private float scaleProgress= nowProgress;
     private float maxProgress =100;
     private int angle=0;
     private int duration=1200;
@@ -114,7 +114,7 @@ public class MyProgress extends View{
         useAnimation =typedArray.getBoolean(R.styleable.MyProgress_useAnimation,true);
         radius=typedArray.getDimension(R.styleable.MyProgress_radius,0);
         maxProgress =typedArray.getFloat(R.styleable.MyProgress_maxProgress,100);
-        progress =typedArray.getFloat(R.styleable.MyProgress_progress,30);
+        nowProgress =typedArray.getFloat(R.styleable.MyProgress_nowProgress,30);
         angle=typedArray.getInt(R.styleable.MyProgress_angle,0);
         duration=typedArray.getInt(R.styleable.MyProgress_duration,1200);
 
@@ -122,13 +122,13 @@ public class MyProgress extends View{
         if(maxProgress<=0){
             this.maxProgress=0;
         }
-        if(progress> maxProgress){
-            this.progress = maxProgress;
-        }else if(progress<0){
-            this.progress =0;
+        if(nowProgress> maxProgress){
+            this.nowProgress = maxProgress;
+        }else if(nowProgress<0){
+            this.nowProgress =0;
         }
 
-        scaleProgress= progress;
+        scaleProgress= nowProgress;
         typedArray.recycle();
 
     }
@@ -425,39 +425,39 @@ public class MyProgress extends View{
         return this;
     }
 
-    public float getProgress() {
-        return progress;
+    public float getNowProgress() {
+        return nowProgress;
     }
 
-    public MyProgress setProgress(float progress) {
-        return setProgress(progress, useAnimation);
+    public MyProgress setNowProgress(float progress) {
+        return setNowProgress(progress, useAnimation);
     }
-    public MyProgress setProgress(float progress, boolean useAnimation) {
-        float beforeProgress=this.progress;
+    public MyProgress setNowProgress(float progress, boolean useAnimation) {
+        float beforeProgress=this.nowProgress;
         if(progress> maxProgress){
-            this.progress = maxProgress;
+            this.nowProgress = maxProgress;
         }else if(progress<0){
-            this.progress =0;
+            this.nowProgress =0;
         }else{
-            this.progress = progress;
+            this.nowProgress = progress;
         }
         if(useAnimation){
-            ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,progress);
+            ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,this.nowProgress);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     MyProgress.this.scaleProgress= (float) animation.getAnimatedValue();
                     invalidate();
-                    setProgressToInter(MyProgress.this.scaleProgress,MyProgress.this.progress,MyProgress.this.maxProgress);
+                    setProgressToInter(MyProgress.this.scaleProgress,MyProgress.this.nowProgress,MyProgress.this.maxProgress);
                 }
             });
             valueAnimator.setInterpolator(interpolator);
             valueAnimator.setDuration(duration);
             valueAnimator.start();
         }else{
-            MyProgress.this.scaleProgress=this.progress;
+            MyProgress.this.scaleProgress=this.nowProgress;
             invalidate();
-            setProgressToInter(MyProgress.this.scaleProgress,this.progress,this.maxProgress);
+            setProgressToInter(MyProgress.this.scaleProgress,this.nowProgress,this.maxProgress);
         }
         return this;
     }
