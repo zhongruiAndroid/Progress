@@ -10,8 +10,8 @@
 | borderColor    | color     | 进度条边框颜色                                                        |
 | borderWidth    | dimension | 进度条边框宽度                                                        |
 | progressColor  | color     | 进度条颜色                                                            |
-| progress       | integer   | 进度条当前进度(默认为30)                                              |
-| maxProgress    | integer   | 进度条最大值(默认为100)                                               |
+| nowProgress       | float   | 进度条当前进度(默认为30)                                              |
+| maxProgress    | float   | 进度条最大值(默认为100)                                               |
 | angle          | integer   | 进度条旋转角度                                                        |
 | radius         | dimension | 进度条圆角大小(默认为viewHeight的一半,最大值不会超过viewHeight的一半) |
 | useAnimation   | boolean   | 是否使用动画(默认为true)                                              |
@@ -44,7 +44,7 @@ LinearGradient linearGradient = new LinearGradient(
                                 ContextCompat.getColor(MainActivity.this, R.color.blue),
                                 Shader.TileMode.MIRROR);
 
-myProgress.setProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
+myProgress.setNowProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
 ```
 ### 注意:代码设置属性之后调用complete()才能生效
 #### 进度监听
