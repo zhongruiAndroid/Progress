@@ -327,7 +327,6 @@ public class MyProgress extends View{
     }
 
 
-
     public int getBorderColor() {
         return borderColor;
     }
@@ -433,7 +432,7 @@ public class MyProgress extends View{
         return setNowProgress(progress, useAnimation);
     }
     public MyProgress setNowProgress(float progress, boolean useAnimation) {
-        float beforeProgress=this.nowProgress;
+        float beforeProgress=this.scaleProgress;
         if(progress> maxProgress){
             this.nowProgress = maxProgress;
         }else if(progress<0){
