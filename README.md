@@ -23,7 +23,7 @@
 | bottomInterval | dimension | 进度条与底部边框的距离                                                |
 
 
-#### 代码设置进度条颜色渐变
+#### 设置进度条颜色渐变
 ```java
 //进度条边框颜色渐变
 Shader borderShader;
