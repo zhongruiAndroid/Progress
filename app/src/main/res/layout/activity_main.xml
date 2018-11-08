@@ -16,8 +16,8 @@
     <com.github.progress.MyProgress
         android:id="@+id/mp"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        app:viewWidth="250dp"
+        android:layout_height="220dp"
+        app:viewWidth="220dp"
         app:viewHeight="30dp"
         app:maxProgress="100"
         app:nowProgress="10"
