@@ -58,7 +58,7 @@
             android:id="@+id/cb_around"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="是否使用圆角"
+            android:text="能否改变圆角"
             android:checked="true"
             android:textColor="@color/gray_66"
             />

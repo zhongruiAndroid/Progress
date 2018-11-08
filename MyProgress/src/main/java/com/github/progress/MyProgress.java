@@ -312,7 +312,7 @@ public class MyProgress extends View{
         if(radius>0){
 //            if(radius>0){
 // //               canvas.drawRoundRect(rectF,radius, radius,progressPaint);
-                progressPath.addRoundRect(rectF,radius, radius, Path.Direction.CW);
+                progressPath.addRoundRect(rectF,(rectF.bottom-rectF.top)/2f, (rectF.bottom-rectF.top)/2f, Path.Direction.CW);
 //            }else{
 // //               canvas.drawRoundRect(rectF, progressHeight /2, progressHeight /2,progressPaint);
 //                progressPath.addRoundRect(rectF, progressHeight /2, progressHeight /2, Path.Direction.CW);
