@@ -22,6 +22,20 @@
 | rightInterval  | dimension | 进度条与右边框的距离                                                  |
 | bottomInterval | dimension | 进度条与底部边框的距离                                                |
 
+  
+    
+      
+```xml
+    <com.github.progress.MyProgress
+        android:id="@+id/mp"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:maxProgress="100"
+        app:nowProgress="10"
+        app:borderColor="@color/green"
+        app:bgColor="@color/white"
+        />
+```  
 
 #### 设置进度条颜色渐变
 ```java
