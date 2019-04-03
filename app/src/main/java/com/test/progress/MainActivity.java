@@ -1,6 +1,7 @@
 package com.test.progress;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -27,12 +29,21 @@ public class MainActivity extends AppCompatActivity {
     SeekBar sb_right;
     SeekBar sb_bottom;
     Context context;
+
+    Button btLookBitmapProgress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context=this;
 
+        btLookBitmapProgress =   findViewById(R.id.btLookBitmapProgress);
+        btLookBitmapProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,TestBitmapActivity.class));
+            }
+        });
         cb_around = (CheckBox) findViewById(R.id.cb_around);
         sb_angle = (SeekBar) findViewById(R.id.sb_angle);
         sb_round = (SeekBar) findViewById(R.id.sb_round);

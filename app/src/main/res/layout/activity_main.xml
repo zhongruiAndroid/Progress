@@ -190,5 +190,13 @@
             android:progress="0"
             />
     </LinearLayout>
+
+        <Button
+            android:id="@+id/btLookBitmapProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="图片进度条"
+            android:layout_gravity="center"
+            />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

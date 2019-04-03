@@ -540,6 +540,10 @@ public class MyProgress extends View{
 
     public MyProgress setBgShader(Shader bgShader) {
         this.bgShader = bgShader;
+        if(this.bgColor==Color.parseColor(def_bgColor)){
+            /*防止bgPaint设置透明色导致背景shader无效*/
+            this.bgColor=Color.WHITE;
+        }
         return this;
     }
 
