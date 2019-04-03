@@ -19,5 +19,19 @@
         <attr name="duration" format="integer"></attr>
         <attr name="radius" format="dimension"></attr>
 
+
+
+        <attr name="bitmapSource" format="reference"></attr>
+        <attr name="startX" format="integer"></attr>
+        <attr name="startY" format="integer"></attr>
+        <attr name="newWidth" format="integer"></attr>
+        <attr name="newHeight" format="integer"></attr>
+
+
+        <attr name="bgBitmapSource" format="reference"></attr>
+        <attr name="bgStartX" format="integer"></attr>
+        <attr name="bgStartY" format="integer"></attr>
+        <attr name="bgNewWidth" format="integer"></attr>
+        <attr name="bgNewHeight" format="integer"></attr>
     </declare-styleable>
 </resources>
