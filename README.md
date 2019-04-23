@@ -76,8 +76,14 @@ myProgress.setOnProgressInter(new MyProgress.OnProgressInter() {
 
 <br/> 
 
-[ ![Download](https://api.bintray.com/packages/zhongrui/mylibrary/MyProgress/images/download.svg) ](https://bintray.com/zhongrui/mylibrary/MyProgress/_latestVersion)<--版本号
+### 如果本库对您有帮助,还希望支付宝扫一扫下面二维码,你我同时免费获取奖励金(非常感谢 Y(^-^)Y)
+![github](https://github.com/zhongruiAndroid/SomeImage/blob/master/image/small_ali.jpg?raw=true "github")  
 <br/> 
+
+| 最新版本号 | [ ![Download](https://api.bintray.com/packages/zhongrui/mylibrary/MyProgress/images/download.svg) ](https://bintray.com/zhongrui/mylibrary/MyProgress/_latestVersion) |
+|--------|----|
+
+
 ```gradle
 compile 'com.github:MyProgress:版本号看上面'
 ```
