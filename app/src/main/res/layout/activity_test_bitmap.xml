@@ -10,7 +10,7 @@
 <com.github.progress.MyProgress
     android:id="@+id/myProgress"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="50dp"
     android:layout_margin="30dp"
     app:borderWidth="0dp"
     />

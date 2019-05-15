@@ -21,7 +21,7 @@ public class TestBitmapActivity extends AppCompatActivity {
 
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.simple_bitmap);
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 9);
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 11);
         Shader shader=new BitmapShader(newBitmap,Shader.TileMode.REPEAT,Shader.TileMode.REPEAT);
         myProgress.setProgressShader(shader);
 
