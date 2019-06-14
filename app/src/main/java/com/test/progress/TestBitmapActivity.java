@@ -31,6 +31,6 @@ public class TestBitmapActivity extends AppCompatActivity {
         Shader shaderBG=new BitmapShader(newBitmapBG,Shader.TileMode.REPEAT,Shader.TileMode.REPEAT);
         myProgress.setBgShader(shaderBG);
 
-        myProgress.setMaxProgress(200).setNowProgress(100).complete();
+        myProgress.setMaxProgress(200).setNowProgress(100).setRadius(80).complete();
     }
 }

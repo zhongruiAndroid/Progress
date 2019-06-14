@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(MainActivity.this, R.color.green),
                 ContextCompat.getColor(MainActivity.this, R.color.blue),
                 Shader.TileMode.MIRROR);
-        mp.setNowProgress(30).setMaxProgress(100).setProgressShader(linearGradient).complete();
+        mp.setNowProgress(30).setMaxProgress(100).setProgressShader(linearGradient).setRadius(mp.getViewHeight()/2).complete();
         mp.setBgColor(ContextCompat.getColor(context,R.color.white));
         mp.setOnProgressInter(new MyProgress.OnProgressInter() {
             @Override

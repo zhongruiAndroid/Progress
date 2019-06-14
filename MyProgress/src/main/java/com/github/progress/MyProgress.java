@@ -193,7 +193,7 @@ public class MyProgress extends View{
         }else if(viewWidth==0){
             viewWidth=getWidth()-borderWidth;
         }
-        radius=viewHeight/2;
+//        radius=viewHeight/2;
         progressPath=new Path();
         resultPath  =new Path();
         initPaint();
