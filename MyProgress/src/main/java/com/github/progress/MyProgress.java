@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -131,6 +132,13 @@ public class MyProgress extends View{
         scaleProgress= nowProgress;
         typedArray.recycle();
 
+
+
+
+        progressPath=new Path();
+        resultPath  =new Path();
+        initPaint();
+
     }
     private boolean isHorizontal(int angle){
         if(angle%180==0){
@@ -194,9 +202,6 @@ public class MyProgress extends View{
             viewWidth=getWidth()-borderWidth;
         }
 //        radius=viewHeight/2;
-        progressPath=new Path();
-        resultPath  =new Path();
-        initPaint();
     }
 
     private void initPaint() {
@@ -323,7 +328,9 @@ public class MyProgress extends View{
             progressPath.addRect(rectF, Path.Direction.CW);
         }
 
-        progressPath.op(resultPath, Path.Op.INTERSECT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            progressPath.op(resultPath, Path.Op.INTERSECT);
+        }
         canvas.drawPath(progressPath,progressPaint);
     }
 
