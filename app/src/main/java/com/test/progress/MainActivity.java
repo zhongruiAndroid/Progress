@@ -20,8 +20,6 @@ import com.github.progress.MyProgress;
 
 public class MainActivity extends AppCompatActivity {
     MyProgress mp;
-    TextView tv_progress0, tv_progress1, tv_progress2;
-    CheckBox cb_around;
     SeekBar sb_angle;
     SeekBar sb_round;
     SeekBar sb_left;
@@ -31,20 +29,28 @@ public class MainActivity extends AppCompatActivity {
     Context context;
 
     Button btLookBitmapProgress;
+
+    private SeekBar sbProgress;
+    private SeekBar sbBorderWidth;
+    private TextView tvBgColor;
+    private TextView tvBorderColor;
+    private TextView tvProgressColor;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context=this;
+        context = this;
+        initView();
 
-        btLookBitmapProgress =   findViewById(R.id.btLookBitmapProgress);
+        btLookBitmapProgress = findViewById(R.id.btLookBitmapProgress);
         btLookBitmapProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,TestBitmapActivity.class));
+                startActivity(new Intent(MainActivity.this, TestBitmapActivity.class));
             }
         });
-        cb_around = (CheckBox) findViewById(R.id.cb_around);
         sb_angle = (SeekBar) findViewById(R.id.sb_angle);
         sb_round = (SeekBar) findViewById(R.id.sb_round);
         sb_left = (SeekBar) findViewById(R.id.sb_left);
@@ -57,22 +63,22 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(MainActivity.this, R.color.green),
                 ContextCompat.getColor(MainActivity.this, R.color.blue),
                 Shader.TileMode.MIRROR);
-        mp.setNowProgress(30).setMaxProgress(100).setProgressShader(linearGradient).setRadius(mp.getViewHeight()/2).complete();
-        mp.setBgColor(ContextCompat.getColor(context,R.color.white));
+        mp.setNowProgress(30).setMaxProgress(100).setProgressShader(linearGradient).setRadius(mp.getViewHeight() / 2).complete();
+        mp.setBgColor(ContextCompat.getColor(context, R.color.white));
         mp.setOnProgressInter(new MyProgress.OnProgressInter() {
             @Override
-            public void progress(float scaleProgress, float progress, float max) {
-                Log.i("======",scaleProgress+"=="+progress+"==="+max);
+            public void progress(float animProgress, float progress, float max) {
+                Log.i("======", animProgress + "==" + progress + "===" + max);
             }
         });
 
         sb_round.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(cb_around.isChecked()){
-                    mp.setRadius(mp.getViewHeight()/2*progress/100).complete();
-                }
+
+                mp.setRadius(mp.getViewHeight() / 2 * progress / 100).complete();
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -84,20 +90,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cb_around.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mp.setRadius(mp.getViewHeight()/2*sb_round.getProgress()/100).complete();
-            }
-        });
+
         sb_angle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mp.setAngle(progress*360/100).complete();
+                mp.setAngle(progress * 360 / 100).complete();
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -108,26 +111,6 @@ public class MainActivity extends AppCompatActivity {
         sb_right.setOnSeekBarChangeListener(getL(2));
         sb_bottom.setOnSeekBarChangeListener(getL(3));
 
-
-        findViewById(R.id.tv_progress0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mp.setNowProgress(0);
-            }
-        });
-        findViewById(R.id.tv_progress1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mp.setNowProgress(50);
-            }
-        });
-        findViewById(R.id.tv_progress2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mp.setNowProgress(100);
-            }
-        });
-
     }
 
     @NonNull
@@ -135,24 +118,26 @@ public class MainActivity extends AppCompatActivity {
         return new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                switch (flag){
+                switch (flag) {
                     case 0:
-                        mp.setLeftInterval(progress*dip2px(context,10)/100).complete();
-                    break;
+                        mp.setLeftInterval(progress * dip2px(context, 10) / 100).complete();
+                        break;
                     case 1:
-                        mp.setTopInterval(progress*dip2px(context,10)/100).complete();
-                    break;
+                        mp.setTopInterval(progress * dip2px(context, 10) / 100).complete();
+                        break;
                     case 2:
-                        mp.setRightInterval(progress*dip2px(context,10)/100).complete();
-                    break;
+                        mp.setRightInterval(progress * dip2px(context, 10) / 100).complete();
+                        break;
                     case 3:
-                        mp.setBottomInterval(progress*dip2px(context,10)/100).complete();
-                    break;
+                        mp.setBottomInterval(progress * dip2px(context, 10) / 100).complete();
+                        break;
                 }
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -161,7 +146,16 @@ public class MainActivity extends AppCompatActivity {
 
     public int dip2px(Context context, float dipValue) {
         float scale = context.getResources().getDisplayMetrics().density;
-        return (int)(dipValue * scale + 0.5F);
+        return (int) (dipValue * scale + 0.5F);
     }
 
+    private void initView() {
+        sbProgress = (SeekBar) findViewById(R.id.sbProgress);
+        sbBorderWidth = (SeekBar) findViewById(R.id.sbBorderWidth);
+        tvBgColor = (TextView) findViewById(R.id.tvBgColor);
+        tvBorderColor = (TextView) findViewById(R.id.tvBorderColor);
+        tvProgressColor = (TextView) findViewById(R.id.tvProgressColor);
+
+
+    }
 }

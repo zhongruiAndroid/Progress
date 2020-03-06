@@ -16,6 +16,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+     repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -25,4 +31,6 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
     implementation project(':MyProgress')
+    implementation(name: 'SelectColorDialog-debug', ext: 'aar')
+    api "com.github.skydoves:colorpickerview:2.0.2"
 }

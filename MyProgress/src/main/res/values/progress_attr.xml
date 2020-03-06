@@ -18,8 +18,21 @@
         <attr name="angle" format="integer"></attr>
         <attr name="duration" format="integer"></attr>
         <attr name="radius" format="dimension"></attr>
+        <attr name="topLeftRadius" format="dimension"></attr>
+        <attr name="topRightRadius" format="dimension"></attr>
+        <attr name="bottomLeftRadius" format="dimension"></attr>
+        <attr name="bottomRightRadius" format="dimension"></attr>
 
 
+        <attr name="nowProgressSecond" format="float"></attr>
+        <attr name="progressColorSecond" format="color"></attr>
+        <attr name="radiusSecond" format="dimension"></attr>
+        <attr name="topLeftRadiusSecond" format="dimension"></attr>
+        <attr name="topRightRadiusSecond" format="dimension"></attr>
+        <attr name="bottomLeftRadiusSecond" format="dimension"></attr>
+        <attr name="bottomRightRadiusSecond" format="dimension"></attr>
+
+<!--
 
         <attr name="bitmapSource" format="reference"></attr>
         <attr name="startX" format="integer"></attr>
@@ -32,6 +45,6 @@
         <attr name="bgStartX" format="integer"></attr>
         <attr name="bgStartY" format="integer"></attr>
         <attr name="bgNewWidth" format="integer"></attr>
-        <attr name="bgNewHeight" format="integer"></attr>
+        <attr name="bgNewHeight" format="integer"></attr>-->
     </declare-styleable>
 </resources>
