@@ -332,7 +332,7 @@ public class MyProgress extends View {
             canvas.drawPath(borderPath, borderPaint);
 
             helperPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-            canvas.drawPath(bgPath,helperPaint);
+            canvas.drawPath(bgPath, helperPaint);
 
             canvas.restoreToCount(count);
         }
@@ -377,15 +377,24 @@ public class MyProgress extends View {
         float tempBorderW = borderWidth / 2;
         if (maxProgress <= 0) {
             if (progressRectF == null) {
-                progressRectF = new RectF(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset - tempBorderW, viewHeight / 2 - bottomOffset);
+                progressRectF = new RectF(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset + tempBorderW, viewHeight / 2 - bottomOffset - tempBorderW);
             } else {
-                progressRectF.set(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset - tempBorderW, viewHeight / 2 - bottomOffset);
+                progressRectF.set(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset + tempBorderW, viewHeight / 2 - bottomOffset - tempBorderW);
             }
         } else {
             if (progressRectF == null) {
-                progressRectF = new RectF(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset), viewHeight / 2 - bottomOffset - tempBorderW);
+                progressRectF = new RectF(
+                        -viewWidth / 2 + leftOffset + tempBorderW,
+                        -viewHeight / 2 + topOffset + tempBorderW,
+                        (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset) + tempBorderW,
+                        viewHeight / 2 - bottomOffset - tempBorderW);
             } else {
-                progressRectF.set(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset), viewHeight / 2 - bottomOffset - tempBorderW);
+
+                progressRectF.set(
+                        -viewWidth / 2 + leftOffset + tempBorderW,
+                        -viewHeight / 2 + topOffset + tempBorderW,
+                        (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset) + tempBorderW,
+                        viewHeight / 2 - bottomOffset - tempBorderW);
             }
         }
         return progressRectF;
