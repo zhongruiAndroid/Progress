@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,8 +18,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.github.progress.MyProgress;
+import com.github.selectcolordialog.SelectColorDialog;
+import com.github.selectcolordialog.SelectColorListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, OnClickListener {
     MyProgress mp;
     SeekBar sb_angle;
     SeekBar sb_round;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvBgColor;
     private TextView tvBorderColor;
     private TextView tvProgressColor;
+    private CheckBox cbShowAnim;
+    private SelectColorDialog selectColorDialog;
 
 
     @Override
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
 
         btLookBitmapProgress = findViewById(R.id.btLookBitmapProgress);
-        btLookBitmapProgress.setOnClickListener(new View.OnClickListener() {
+        btLookBitmapProgress.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, TestBitmapActivity.class));
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         sb_bottom = (SeekBar) findViewById(R.id.sb_bottom);
 
         mp = (MyProgress) findViewById(R.id.mp);
+        mp.setUseAnimation(cbShowAnim.isClickable());
         LinearGradient linearGradient = new LinearGradient(-mp.getViewWidth() / 2, -mp.getViewHeight() / 2, mp.getViewWidth() / 2, mp.getViewHeight() / 2,
                 ContextCompat.getColor(MainActivity.this, R.color.green),
                 ContextCompat.getColor(MainActivity.this, R.color.blue),
@@ -151,11 +157,91 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         sbProgress = (SeekBar) findViewById(R.id.sbProgress);
+        sbProgress.setOnSeekBarChangeListener(this);
+
+
+        cbShowAnim = findViewById(R.id.cbShowAnim);
+        cbShowAnim.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mp.setUseAnimation(isChecked);
+            }
+        });
+
         sbBorderWidth = (SeekBar) findViewById(R.id.sbBorderWidth);
+        sbBorderWidth.setOnSeekBarChangeListener(this);
+
         tvBgColor = (TextView) findViewById(R.id.tvBgColor);
+        tvBgColor.setOnClickListener(this);
+
         tvBorderColor = (TextView) findViewById(R.id.tvBorderColor);
+        tvBorderColor.setOnClickListener(this);
+
         tvProgressColor = (TextView) findViewById(R.id.tvProgressColor);
+        tvProgressColor.setOnClickListener(this);
 
 
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tvProgressColor:
+                selectColorDialog = new SelectColorDialog(this);
+                selectColorDialog.setListener(new SelectColorListener() {
+                    @Override
+                    public void selectColor(int color) {
+                        mp.setProgressColor(color).complete();
+                        tvProgressColor.setBackgroundColor(color);
+                    }
+                });
+                selectColorDialog.show();
+                break;
+            case R.id.tvBgColor:
+                selectColorDialog = new SelectColorDialog(this);
+                selectColorDialog.setListener(new SelectColorListener() {
+                    @Override
+                    public void selectColor(int color) {
+                        mp.setBgColor(color).complete();
+                        tvBgColor.setBackgroundColor(color);
+                    }
+                });
+                selectColorDialog.show();
+                break;
+            case R.id.tvBorderColor:
+                selectColorDialog = new SelectColorDialog(this);
+                selectColorDialog.setListener(new SelectColorListener() {
+                    @Override
+                    public void selectColor(int color) {
+                        mp.setBorderColor(color).complete();
+                        tvBorderColor.setBackgroundColor(color);
+                    }
+                });
+                selectColorDialog.show();
+                break;
+        }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        switch (seekBar.getId()) {
+            case R.id.sbProgress:
+                mp.setNowProgress(progress).complete();
+                break;
+            case R.id.sbBorderWidth:
+                mp.setBorderWidth(progress / 3).complete();
+                break;
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
 }

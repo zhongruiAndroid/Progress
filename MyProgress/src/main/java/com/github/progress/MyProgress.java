@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
@@ -28,6 +30,7 @@ public class MyProgress extends View {
     private OnProgressInter onProgressInter;
     private RectF borderRectF;
     private RectF progressRectF;
+    private ValueAnimator valueAnimator;
 
     public interface OnProgressInter {
         void progress(float animProgress, float progress, float max);
@@ -94,9 +97,11 @@ public class MyProgress extends View {
 
     private TimeInterpolator interpolator = new DecelerateInterpolator();
 
+    private Paint helperPaint;
     /*progress*/
     private Paint progressPaint;
     private Path progressPath;
+
 
     /*bg*/
     private Paint bgPaint;
@@ -263,6 +268,10 @@ public class MyProgress extends View {
         progressPaint.setStyle(Paint.Style.FILL);
         progressPaint.setColor(progressColor);
 
+
+        helperPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        helperPaint.setStyle(Paint.Style.FILL);
+        helperPaint.setColor(Color.WHITE);
     }
 
     @Override
@@ -315,11 +324,21 @@ public class MyProgress extends View {
             canvas.clipPath(bgPath);
         }
 
+
         canvas.drawPath(bgPath, bgPaint);
+
         if (borderWidth > 0) {
+            int count = canvas.saveLayer(-viewWidth / 2, -viewHeight / 2, viewWidth / 2, viewHeight / 2, null, Canvas.ALL_SAVE_FLAG);
             canvas.drawPath(borderPath, borderPaint);
+
+            helperPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+            canvas.drawPath(bgPath,helperPaint);
+
+            canvas.restoreToCount(count);
         }
         canvas.drawPath(progressPath, progressPaint);
+
+
     }
 
 
@@ -378,7 +397,24 @@ public class MyProgress extends View {
         }
         float scale = getProgressRectF().height() * 1f / getBorderRectF().height();
         float tempRadius = getRadius() * scale;
-        return new float[]{tempRadius, tempRadius, tempRadius, tempRadius, tempRadius, tempRadius, tempRadius, tempRadius};
+        return new float[]{
+                noTopLeftRadius ? 0 : tempRadius, noTopLeftRadius ? 0 : tempRadius,
+                noTopRightRadius ? 0 : tempRadius, noTopRightRadius ? 0 : tempRadius,
+                noBottomLeftRadius ? 0 : tempRadius, noBottomLeftRadius ? 0 : tempRadius,
+                noBottomRightRadius ? 0 : tempRadius, noBottomRightRadius ? 0 : tempRadius};
+    }
+
+    private float[] getRectFRadiusSecond(boolean isBGRadius) {
+        if (isBGRadius) {
+            return new float[]{getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius()};
+        }
+        float scale = getProgressRectF().height() * 1f / getBorderRectF().height();
+        float tempRadius = getRadius() * scale;
+        return new float[]{
+                noTopLeftRadiusSecond ? 0 : tempRadius, noTopLeftRadiusSecond ? 0 : tempRadius,
+                noTopRightRadiusSecond ? 0 : tempRadius, noTopRightRadiusSecond ? 0 : tempRadius,
+                noBottomLeftRadiusSecond ? 0 : tempRadius, noBottomLeftRadiusSecond ? 0 : tempRadius,
+                noBottomRightRadiusSecond ? 0 : tempRadius, noBottomRightRadiusSecond ? 0 : tempRadius};
     }
 
     private void needInvalidate() {
@@ -413,8 +449,10 @@ public class MyProgress extends View {
         }
         this.borderWidth = borderWidth;
         borderPaint.setStrokeWidth(borderWidth);
-        getBorderRectF();
-        getProgressRectF();
+
+        updateBGPath();
+        updateBorderPath();
+        updateProgressPath();
         return this;
     }
 
@@ -429,6 +467,7 @@ public class MyProgress extends View {
         this.progressColor = progressColor;
         this.progressShader = null;
         progressPaint.setColor(progressColor);
+        progressPaint.setShader(null);
         return this;
     }
 
@@ -441,7 +480,7 @@ public class MyProgress extends View {
             return this;
         }
         this.allInterval = allInterval;
-        getProgressRectF();
+        updateProgressPath();
         return this;
     }
 
@@ -450,11 +489,11 @@ public class MyProgress extends View {
     }
 
     public MyProgress setLeftInterval(int leftInterval) {
-        if(leftInterval==this.leftInterval){
+        if (leftInterval == this.leftInterval) {
             return this;
         }
         this.leftInterval = leftInterval;
-        getProgressRectF();
+        updateProgressPath();
         return this;
     }
 
@@ -463,11 +502,11 @@ public class MyProgress extends View {
     }
 
     public MyProgress setTopInterval(int topInterval) {
-        if(topInterval==this.topInterval){
+        if (topInterval == this.topInterval) {
             return this;
         }
         this.topInterval = topInterval;
-        getProgressRectF();
+        updateProgressPath();
         return this;
     }
 
@@ -476,11 +515,11 @@ public class MyProgress extends View {
     }
 
     public MyProgress setRightInterval(int rightInterval) {
-        if(rightInterval==this.rightInterval){
+        if (rightInterval == this.rightInterval) {
             return this;
         }
         this.rightInterval = rightInterval;
-        getProgressRectF();
+        updateProgressPath();
         return this;
     }
 
@@ -493,7 +532,7 @@ public class MyProgress extends View {
             return this;
         }
         this.bottomInterval = bottomInterval;
-        getProgressRectF();
+        updateProgressPath();
         return this;
     }
 
@@ -541,11 +580,12 @@ public class MyProgress extends View {
             this.nowProgress = progress;
         }
         if (useAnimation) {
-            ValueAnimator valueAnimator = ValueAnimator.ofFloat(beforeProgress, this.nowProgress);
+            valueAnimator = ValueAnimator.ofFloat(beforeProgress, this.nowProgress);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     MyProgress.this.scaleProgress = (float) animation.getAnimatedValue();
+                    updateProgressPath();
                     invalidate();
                     setProgressToInter(MyProgress.this.scaleProgress, MyProgress.this.nowProgress, MyProgress.this.maxProgress);
                 }
@@ -555,6 +595,7 @@ public class MyProgress extends View {
             valueAnimator.start();
         } else {
             MyProgress.this.scaleProgress = this.nowProgress;
+            updateProgressPath();
             invalidate();
             setProgressToInter(MyProgress.this.scaleProgress, this.nowProgress, this.maxProgress);
         }
@@ -593,8 +634,9 @@ public class MyProgress extends View {
             return this;
         }
         this.viewWidth = viewWidth;
-        getBorderRectF();
-        getProgressRectF();
+        updateBGPath();
+        updateBorderPath();
+        updateProgressPath();
         return this;
     }
 
@@ -607,8 +649,9 @@ public class MyProgress extends View {
             return this;
         }
         this.viewHeight = viewHeight;
-        getBorderRectF();
-        getProgressRectF();
+        updateBGPath();
+        updateBorderPath();
+        updateProgressPath();
         return this;
     }
 
@@ -630,7 +673,13 @@ public class MyProgress extends View {
     }
 
     public MyProgress setRadius(float radius) {
+        if (radius == this.radius) {
+            return this;
+        }
         this.radius = radius;
+        updateBGPath();
+        updateBorderPath();
+        updateProgressPath();
         return this;
     }
 
