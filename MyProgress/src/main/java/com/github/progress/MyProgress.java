@@ -61,6 +61,7 @@ public class MyProgress extends View{
     private float scaleProgress= nowProgress;
     private float maxProgress =100;
     private int angle=0;
+    private int rotateAngle=0;
     private int duration=1200;
 
 
@@ -239,24 +240,13 @@ public class MyProgress extends View{
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        if(viewWidth==0&&viewHeight==0){
-            if(isHorizontal(angle)){
-                viewWidth=getWidth()-borderWidth;
-                viewHeight=getHeight()-borderWidth;
-            }else if(isVertical(angle)){
-                viewWidth=getHeight()-borderWidth;
-                viewHeight=getWidth()-borderWidth;
-            }else{
-                viewWidth=300;
-                viewHeight=20;
-            }
-        }else if(viewHeight==0){
-            viewHeight=getHeight()-borderWidth;
-        }else if(viewWidth==0){
-            viewWidth=getWidth()-borderWidth;
+
+
+    private void updateBGPath() {
+        if(bgPath!=null){
+            bgPath.reset();
         }
+        bgPath.addRoundRect(getBorderRectF(),getRectFRadius(true), Path.Direction.CW);
     }
 
     private void initPaint() {
@@ -275,57 +265,66 @@ public class MyProgress extends View{
         progressPaint.setColor(progressColor);
 
     }
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if(viewWidth==0&&viewHeight==0){
+            if(isHorizontal(angle)){
+                viewWidth=getWidth()-borderWidth;
+                viewHeight=getHeight()-borderWidth;
+            }else if(isVertical(angle)){
+                viewWidth=getHeight()-borderWidth;
+                viewHeight=getWidth()-borderWidth;
+            }else{
+                viewWidth=300;
+                viewHeight=20;
+            }
+        }else if(viewHeight==0){
+            viewHeight=getHeight()-borderWidth;
+        }else if(viewWidth==0){
+            viewWidth=getWidth()-borderWidth;
+        }
+
+
+        updateBGPath();
+        updateBorderPath();
+        updateProgressPath();
+    }
+
+    private void updateProgressPath() {
+        progressPath.reset();
+        progressPath.addRoundRect(getProgressRectF(),getRectFRadius(false), Path.Direction.CW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            progressPath.op(bgPath, Path.Op.INTERSECT);
+        }
+    }
+
+    private void updateBorderPath() {
+        borderPath.reset();
+        borderPath.addRoundRect(getBorderRectF(),getRectFRadius(true), Path.Direction.CW);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        float scaleAngle=angle%360;
         canvas.translate(getWidth()/2,getHeight()/2);
-        if(scaleAngle>0){
-            canvas.rotate(scaleAngle);
+        if(rotateAngle>0){
+            canvas.rotate(rotateAngle);
         }
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             canvas.clipPath(bgPath);
         }
 
-        drawBg(canvas);
-        if(borderWidth>0){
-            drawBorder(canvas);
-        }
-        drawProgress(canvas);
-    }
-    private void drawBorder(Canvas canvas) {
-        borderPath.addRoundRect(getBorderRectF(),getRectFRadius(true), Path.Direction.CW);
-        canvas.drawPath(borderPath,borderPaint);
-    }
-    private void drawBg(Canvas canvas) {
-        if(bgShader==null){
-            bgPaint.setShader(null);
-        }else if(bgPaint.getShader()!=bgShader){
-            bgPaint.setShader(bgShader);
-        }
-        if(bgPath!=null&&!bgPath.isEmpty()){
-            bgPath.reset();
-        }
-        bgPath.addRoundRect(getBorderRectF(),getRectFRadius(true), Path.Direction.CW);
         canvas.drawPath(bgPath,bgPaint);
-    }
-
-    private void drawProgress(Canvas canvas) {
-
-        if(progressShader!=null){
-            progressPaint.setShader(progressShader);
-        }else{
-            progressPaint.setShader(null);
-        }
-
-        progressPath.reset();
-        progressPath.addRoundRect(getProgressRectF(),getRectFRadius(false), Path.Direction.CW);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            progressPath.op(bgPath, Path.Op.INTERSECT);
+        if(borderWidth>0){
+            canvas.drawPath(borderPath,borderPaint);
         }
         canvas.drawPath(progressPath,progressPaint);
+    }
+
+
+    private float getScaleAngle(){
+        return angle%360;
     }
 
     private RectF getBorderRectF(){
@@ -468,7 +467,11 @@ public class MyProgress extends View{
     }
 
     public MyProgress setBottomInterval(int bottomInterval) {
+        if(bottomInterval==this.bottomInterval){
+            return this;
+        }
         this.bottomInterval = bottomInterval;
+        updateProgressPath();
         return this;
     }
 
@@ -539,7 +542,12 @@ public class MyProgress extends View{
 
     public MyProgress setAngle(int angle) {
         this.angle = angle;
+        setRotateAngle(angle%360);
         return this;
+    }
+
+    private void setRotateAngle(int rotateAngle) {
+        this.rotateAngle = rotateAngle;
     }
 
     public int getDuration() {
@@ -638,11 +646,15 @@ public class MyProgress extends View{
     }
 
     public MyProgress setBgShader(Shader bgShader) {
+        if(bgShader==this.bgShader){
+            return this;
+        }
         this.bgShader = bgShader;
         if(this.bgColor==Color.parseColor(def_bgColor)){
             /*防止bgPaint设置透明色导致背景shader无效*/
             this.bgColor=Color.WHITE;
         }
+        bgPaint.setShader(bgShader);
         return this;
     }
 
@@ -651,7 +663,11 @@ public class MyProgress extends View{
     }
 
     public MyProgress setProgressShader(Shader progressShader) {
+        if(progressShader==this.progressShader){
+            return this;
+        }
         this.progressShader = progressShader;
+        progressPaint.setShader(progressShader);
         return this;
     }
 }
