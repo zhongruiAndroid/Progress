@@ -22,6 +22,9 @@ android {
             dirs 'libs'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {

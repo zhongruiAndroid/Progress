@@ -28,4 +28,14 @@ public class ExampleUnitTest {
         System.out.println(360%360);
         System.out.println(367%360);
     }
+    @Test
+    public void dd() throws Exception {
+        float a=0.9f;
+        int b= (int) a;
+        int c= (int) 1.2f;
+        int d= (int) 1.5f;
+        System.out.println(b);
+        System.out.println(c);
+        System.out.println(d);
+    }
 }
