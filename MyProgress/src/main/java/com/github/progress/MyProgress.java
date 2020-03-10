@@ -24,46 +24,49 @@ import android.view.animation.DecelerateInterpolator;
  * Created by Administrator on 2018/6/21.
  */
 
-public class MyProgress extends View{
+public class MyProgress extends View {
     private OnProgressInter onProgressInter;
     private RectF borderRectF;
     private RectF progressRectF;
 
     public interface OnProgressInter {
-        void progress(float animProgress,float progress, float max);
+        void progress(float animProgress, float progress, float max);
     }
+
     public OnProgressInter getOnProgressInter() {
         return onProgressInter;
     }
+
     public void setOnProgressInter(OnProgressInter onProgressInter) {
         this.onProgressInter = onProgressInter;
     }
-    private void setProgressToInter(float scaleProgress,float progress, float max) {
-        if(onProgressInter !=null){
-            onProgressInter.progress(scaleProgress,progress,max);
+
+    private void setProgressToInter(float scaleProgress, float progress, float max) {
+        if (onProgressInter != null) {
+            onProgressInter.progress(scaleProgress, progress, max);
         }
     }
+
     private float viewWidth;
     private float viewHeight;
     private float radius;
     private int bgColor;
     private int borderColor;
-    private float borderWidth=4;
+    private float borderWidth = 4;
     private int progressColor;
-    private int allInterval=0;
+    private int allInterval = 0;
     private int leftInterval;
     private int topInterval;
     private int rightInterval;
     private int bottomInterval;
-    private boolean useAnimation =true;
-    private float nowProgress =30;
+    private boolean useAnimation = true;
+    private float nowProgress = 30;
     //用于动画计算
-    private float scaleProgress= nowProgress;
-    private float maxProgress =100;
-    private int angle=0;
-    private int rotateAngle=0;
-    private int duration=1200;
-
+    private float scaleProgress = nowProgress;
+    private float maxProgress = 100;
+    private int angle = 0;
+    private int rotateAngle = 0;
+    private int duration = 1200;
 
 
     private boolean noTopLeftRadius;
@@ -80,18 +83,16 @@ public class MyProgress extends View{
     private boolean noBottomRightRadiusSecond;
 
 
-
-
     private Shader borderShader;
     private Shader bgShader;
     private Shader progressShader;
 
 
-    private final String def_borderColor="#239936";
-    private final String def_bgColor="#00000000";
-    private final String def_progressColor=def_borderColor;
+    private final String def_borderColor = "#239936";
+    private final String def_bgColor = "#00000000";
+    private final String def_progressColor = def_borderColor;
 
-    private TimeInterpolator interpolator =new DecelerateInterpolator();
+    private TimeInterpolator interpolator = new DecelerateInterpolator();
 
     /*progress*/
     private Paint progressPaint;
@@ -127,9 +128,9 @@ public class MyProgress extends View{
     }
 
     private void init(AttributeSet attrs) {
-        bgColor= Color.parseColor(def_bgColor);
-        borderColor= Color.parseColor(def_borderColor);
-        progressColor= Color.parseColor(def_progressColor);
+        bgColor = Color.parseColor(def_bgColor);
+        borderColor = Color.parseColor(def_borderColor);
+        progressColor = Color.parseColor(def_progressColor);
 
         if (attrs == null) {
             return;
@@ -137,51 +138,49 @@ public class MyProgress extends View{
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyProgress);
 
-        viewWidth=  typedArray.getDimension(R.styleable.MyProgress_viewWidth,0);
-        viewHeight=  typedArray.getDimension(R.styleable.MyProgress_viewHeight,0);
-        bgColor=typedArray.getColor(R.styleable.MyProgress_bgColor,Color.parseColor(def_bgColor));
-        borderColor=typedArray.getColor(R.styleable.MyProgress_borderColor,Color.parseColor(def_borderColor));
-        borderWidth=  typedArray.getDimension(R.styleable.MyProgress_borderWidth,4);
-        progressColor=typedArray.getColor(R.styleable.MyProgress_progressColor,borderColor);
-        allInterval=(int)typedArray.getDimension(R.styleable.MyProgress_allInterval,0);
-        leftInterval=(int)typedArray.getDimension(R.styleable.MyProgress_leftInterval,0);
-        topInterval=(int)typedArray.getDimension(R.styleable.MyProgress_topInterval,0);
-        rightInterval=(int)typedArray.getDimension(R.styleable.MyProgress_rightInterval,0);
-        bottomInterval=(int)typedArray.getDimension(R.styleable.MyProgress_bottomInterval,0);
-        useAnimation =typedArray.getBoolean(R.styleable.MyProgress_useAnimation,true);
-        radius = typedArray.getDimension(R.styleable.MyProgress_radius,0);
-        maxProgress =typedArray.getFloat(R.styleable.MyProgress_maxProgress,100);
-        nowProgress =typedArray.getFloat(R.styleable.MyProgress_nowProgress,0);
-        angle=typedArray.getInt(R.styleable.MyProgress_angle,0);
-        duration=typedArray.getInt(R.styleable.MyProgress_duration,1200);
+        viewWidth = typedArray.getDimension(R.styleable.MyProgress_viewWidth, 0);
+        viewHeight = typedArray.getDimension(R.styleable.MyProgress_viewHeight, 0);
+        bgColor = typedArray.getColor(R.styleable.MyProgress_bgColor, Color.parseColor(def_bgColor));
+        borderColor = typedArray.getColor(R.styleable.MyProgress_borderColor, Color.parseColor(def_borderColor));
+        borderWidth = typedArray.getDimension(R.styleable.MyProgress_borderWidth, 4);
+        progressColor = typedArray.getColor(R.styleable.MyProgress_progressColor, borderColor);
+        allInterval = (int) typedArray.getDimension(R.styleable.MyProgress_allInterval, 0);
+        leftInterval = (int) typedArray.getDimension(R.styleable.MyProgress_leftInterval, 0);
+        topInterval = (int) typedArray.getDimension(R.styleable.MyProgress_topInterval, 0);
+        rightInterval = (int) typedArray.getDimension(R.styleable.MyProgress_rightInterval, 0);
+        bottomInterval = (int) typedArray.getDimension(R.styleable.MyProgress_bottomInterval, 0);
+        useAnimation = typedArray.getBoolean(R.styleable.MyProgress_useAnimation, true);
+        radius = typedArray.getDimension(R.styleable.MyProgress_radius, 0);
+        maxProgress = typedArray.getFloat(R.styleable.MyProgress_maxProgress, 100);
+        nowProgress = typedArray.getFloat(R.styleable.MyProgress_nowProgress, 0);
+        angle = typedArray.getInt(R.styleable.MyProgress_angle, 0);
+        duration = typedArray.getInt(R.styleable.MyProgress_duration, 1200);
 
-        noTopLeftRadius=typedArray.getBoolean(R.styleable.MyProgress_noTopLeftRadius,false);
-        noTopRightRadius=typedArray.getBoolean(R.styleable.MyProgress_noTopRightRadius,false);
-        noBottomLeftRadius=typedArray.getBoolean(R.styleable.MyProgress_noBottomLeftRadius,false);
-        noBottomRightRadius=typedArray.getBoolean(R.styleable.MyProgress_noBottomRightRadius,false);
+        noTopLeftRadius = typedArray.getBoolean(R.styleable.MyProgress_noTopLeftRadius, false);
+        noTopRightRadius = typedArray.getBoolean(R.styleable.MyProgress_noTopRightRadius, false);
+        noBottomLeftRadius = typedArray.getBoolean(R.styleable.MyProgress_noBottomLeftRadius, false);
+        noBottomRightRadius = typedArray.getBoolean(R.styleable.MyProgress_noBottomRightRadius, false);
 
-        nowProgressSecond=typedArray.getDimension(R.styleable.MyProgress_nowProgressSecond,0);
-        progressColorSecond=typedArray.getColor(R.styleable.MyProgress_progressColorSecond,Color.TRANSPARENT);
+        nowProgressSecond = typedArray.getDimension(R.styleable.MyProgress_nowProgressSecond, 0);
+        progressColorSecond = typedArray.getColor(R.styleable.MyProgress_progressColorSecond, Color.TRANSPARENT);
 
 
-        noTopLeftRadiusSecond=typedArray.getBoolean(R.styleable.MyProgress_noTopLeftRadiusSecond,false);
-        noTopRightRadiusSecond=typedArray.getBoolean(R.styleable.MyProgress_noTopRightRadiusSecond,false);
-        noBottomLeftRadiusSecond=typedArray.getBoolean(R.styleable.MyProgress_noBottomLeftRadiusSecond,false);
-        noBottomRightRadiusSecond=typedArray.getBoolean(R.styleable.MyProgress_noBottomRightRadiusSecond,false);
+        noTopLeftRadiusSecond = typedArray.getBoolean(R.styleable.MyProgress_noTopLeftRadiusSecond, false);
+        noTopRightRadiusSecond = typedArray.getBoolean(R.styleable.MyProgress_noTopRightRadiusSecond, false);
+        noBottomLeftRadiusSecond = typedArray.getBoolean(R.styleable.MyProgress_noBottomLeftRadiusSecond, false);
+        noBottomRightRadiusSecond = typedArray.getBoolean(R.styleable.MyProgress_noBottomRightRadiusSecond, false);
 
-        if(maxProgress<=0){
-            this.maxProgress=0;
+        if (maxProgress <= 0) {
+            this.maxProgress = 0;
         }
-        if(nowProgress> maxProgress){
+        if (nowProgress > maxProgress) {
             this.nowProgress = maxProgress;
-        }else if(nowProgress<0){
-            this.nowProgress =0;
+        } else if (nowProgress < 0) {
+            this.nowProgress = 0;
         }
 
-        scaleProgress= nowProgress;
+        scaleProgress = nowProgress;
         typedArray.recycle();
-
-
 
 
         initPaint();
@@ -190,98 +189,99 @@ public class MyProgress extends View{
         initPath();
 
 
-
     }
 
     private void initPath() {
-        progressPath=new Path();
-        borderPath=new Path();
-        bgPath=new Path();
+        progressPath = new Path();
+        borderPath = new Path();
+        bgPath = new Path();
     }
 
-    private boolean isHorizontal(int angle){
-        if(angle%180==0){
+    private boolean isHorizontal(int angle) {
+        if (angle % 180 == 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    private boolean isVertical(int angle){
-        if(isHorizontal(angle)){
+
+    private boolean isVertical(int angle) {
+        if (isHorizontal(angle)) {
             return false;
-        }else{
-            if(angle%90==0){
+        } else {
+            if (angle % 90 == 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        int mWidth =  400;
+        int mWidth = 400;
         int mHeight = 30;
-        if(viewWidth+0>mWidth){
-            mWidth= (int) (viewWidth+0);
+        if (viewWidth + 0 > mWidth) {
+            mWidth = (int) (viewWidth + 0);
         }
-        if(viewHeight+0>mHeight){
-            mHeight= (int) (viewHeight+0);
+        if (viewHeight + 0 > mHeight) {
+            mHeight = (int) (viewHeight + 0);
         }
-        if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT&&getLayoutParams().height==ViewGroup.LayoutParams.WRAP_CONTENT){
-            setMeasuredDimension(mWidth,mHeight);
-        }else if(getLayoutParams().width== ViewGroup.LayoutParams.WRAP_CONTENT){
-            setMeasuredDimension(mWidth,heightSize);
-        }else if(getLayoutParams().height== ViewGroup.LayoutParams.WRAP_CONTENT){
-            setMeasuredDimension(widthSize,mHeight);
-        }else{
+        if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT && getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            setMeasuredDimension(mWidth, mHeight);
+        } else if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            setMeasuredDimension(mWidth, heightSize);
+        } else if (getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            setMeasuredDimension(widthSize, mHeight);
+        } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
 
 
-
     private void updateBGPath() {
-        if(bgPath!=null){
+        if (bgPath != null) {
             bgPath.reset();
         }
-        bgPath.addRoundRect(getBorderRectF(),getRectFRadius(true), Path.Direction.CW);
+        bgPath.addRoundRect(getBorderRectF(), getRectFRadius(true), Path.Direction.CW);
     }
 
     private void initPaint() {
-        borderPaint =new Paint(Paint.ANTI_ALIAS_FLAG);
+        borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setColor(borderColor);
         borderPaint.setStrokeWidth(borderWidth);
 
-        bgPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setStyle(Paint.Style.FILL);
         bgPaint.setColor(bgColor);
 
 
-        progressPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        progressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressPaint.setStyle(Paint.Style.FILL);
         progressPaint.setColor(progressColor);
 
     }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        if(viewWidth==0&&viewHeight==0){
-            if(isHorizontal(angle)){
-                viewWidth=getWidth()-borderWidth;
-                viewHeight=getHeight()-borderWidth;
-            }else if(isVertical(angle)){
-                viewWidth=getHeight()-borderWidth;
-                viewHeight=getWidth()-borderWidth;
-            }else{
-                viewWidth=300;
-                viewHeight=20;
+        if (viewWidth == 0 && viewHeight == 0) {
+            if (isHorizontal(angle)) {
+                viewWidth = getWidth();
+                viewHeight = getHeight();
+            } else if (isVertical(angle)) {
+                viewWidth = getHeight();
+                viewHeight = getWidth();
+            } else {
+                viewWidth = 300;
+                viewHeight = 20;
             }
-        }else if(viewHeight==0){
-            viewHeight=getHeight()-borderWidth;
-        }else if(viewWidth==0){
-            viewWidth=getWidth()-borderWidth;
+        } else if (viewHeight == 0) {
+            viewHeight = getHeight();
+        } else if (viewWidth == 0) {
+            viewWidth = getWidth();
         }
 
 
@@ -292,7 +292,7 @@ public class MyProgress extends View{
 
     private void updateProgressPath() {
         progressPath.reset();
-        progressPath.addRoundRect(getProgressRectF(),getRectFRadius(false), Path.Direction.CW);
+        progressPath.addRoundRect(getProgressRectF(), getRectFRadius(false), Path.Direction.CW);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             progressPath.op(bgPath, Path.Op.INTERSECT);
         }
@@ -300,14 +300,14 @@ public class MyProgress extends View{
 
     private void updateBorderPath() {
         borderPath.reset();
-        borderPath.addRoundRect(getBorderRectF(),getRectFRadius(true), Path.Direction.CW);
+        borderPath.addRoundRect(getBorderRectF(), getRectFRadius(true), Path.Direction.CW);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        canvas.translate(getWidth()/2,getHeight()/2);
-        if(rotateAngle>0){
+        canvas.translate(getWidth() / 2, getHeight() / 2);
+        if (rotateAngle > 0) {
             canvas.rotate(rotateAngle);
         }
 
@@ -315,70 +315,73 @@ public class MyProgress extends View{
             canvas.clipPath(bgPath);
         }
 
-        canvas.drawPath(bgPath,bgPaint);
-        if(borderWidth>0){
-            canvas.drawPath(borderPath,borderPaint);
+        canvas.drawPath(bgPath, bgPaint);
+        if (borderWidth > 0) {
+            canvas.drawPath(borderPath, borderPaint);
         }
-        canvas.drawPath(progressPath,progressPaint);
+        canvas.drawPath(progressPath, progressPaint);
     }
 
 
-    private float getScaleAngle(){
-        return angle%360;
+    private float getScaleAngle() {
+        return angle % 360;
     }
 
-    private RectF getBorderRectF(){
-        if(borderRectF==null){
-            borderRectF=new RectF(-viewWidth/2+borderWidth/2,-viewHeight/2+borderWidth/2, viewWidth/2-borderWidth/2, viewHeight /2-borderWidth/2);
-        }else{
-            borderRectF.set(-viewWidth/2+borderWidth/2,-viewHeight/2+borderWidth/2, viewWidth/2-borderWidth/2, viewHeight /2-borderWidth/2);
+    private RectF getBorderRectF() {
+        if (borderRectF == null) {
+            borderRectF = new RectF(-viewWidth / 2 + borderWidth / 2, -viewHeight / 2 + borderWidth / 2, viewWidth / 2 - borderWidth / 2, viewHeight / 2 - borderWidth / 2);
+        } else {
+            borderRectF.set(-viewWidth / 2 + borderWidth / 2, -viewHeight / 2 + borderWidth / 2, viewWidth / 2 - borderWidth / 2, viewHeight / 2 - borderWidth / 2);
         }
         return borderRectF;
     }
-    private RectF getProgressRectF(){
-        float progressWidth=viewWidth;
-        float progressHeight=viewHeight;
-        float leftOffset=leftInterval;
-        float topOffset=topInterval;
-        float rightOffset=rightInterval;
-        float bottomOffset=bottomInterval;
-        if(allInterval>0){
-            progressWidth=viewWidth-allInterval*2-getBorderWidth();
-            progressHeight=viewHeight-allInterval*2-getBorderWidth();
-            leftOffset=allInterval;
-            topOffset=allInterval;
-            rightOffset=allInterval;
-            bottomOffset=allInterval;
-        }else{
-            progressWidth=viewWidth-leftOffset-rightOffset-getBorderWidth();
-            progressHeight=viewHeight-topInterval-bottomInterval-getBorderWidth();
+
+    private RectF getProgressRectF() {
+        float progressWidth = viewWidth;
+        float progressHeight = viewHeight;
+        float leftOffset = leftInterval;
+        float topOffset = topInterval;
+        float rightOffset = rightInterval;
+        float bottomOffset = bottomInterval;
+        if (allInterval > 0) {
+            progressWidth = viewWidth - allInterval * 2 - getBorderWidth();
+            progressHeight = viewHeight - allInterval * 2 - getBorderWidth();
+            leftOffset = allInterval;
+            topOffset = allInterval;
+            rightOffset = allInterval;
+            bottomOffset = allInterval;
+        } else {
+            progressWidth = viewWidth - leftOffset - rightOffset - getBorderWidth();
+            progressHeight = viewHeight - topInterval - bottomInterval - getBorderWidth();
         }
 
-        float tempBorderW=borderWidth/2;
-        if(maxProgress<=0){
-            if(progressRectF==null){
-                progressRectF=new RectF(-viewWidth/2+leftOffset+tempBorderW,-viewHeight/2+topOffset+tempBorderW,-viewWidth/2+leftOffset-tempBorderW, viewHeight /2-bottomOffset);
-            }else{
-                progressRectF.set(-viewWidth/2+leftOffset+tempBorderW,-viewHeight/2+topOffset+tempBorderW,-viewWidth/2+leftOffset-tempBorderW, viewHeight /2-bottomOffset);
+        float tempBorderW = borderWidth / 2;
+        if (maxProgress <= 0) {
+            if (progressRectF == null) {
+                progressRectF = new RectF(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset - tempBorderW, viewHeight / 2 - bottomOffset);
+            } else {
+                progressRectF.set(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset - tempBorderW, viewHeight / 2 - bottomOffset);
             }
-        }else{
-            if(progressRectF==null){
-                progressRectF=new RectF(-viewWidth/2+leftOffset+tempBorderW,-viewHeight/2+topOffset+tempBorderW, (progressWidth*scaleProgress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset-tempBorderW);
-            }else{
-                progressRectF.set(-viewWidth/2+leftOffset+tempBorderW,-viewHeight/2+topOffset+tempBorderW, (progressWidth*scaleProgress/ maxProgress -viewWidth/2+leftOffset), viewHeight /2-bottomOffset-tempBorderW);
+        } else {
+            if (progressRectF == null) {
+                progressRectF = new RectF(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset), viewHeight / 2 - bottomOffset - tempBorderW);
+            } else {
+                progressRectF.set(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset), viewHeight / 2 - bottomOffset - tempBorderW);
             }
         }
         return progressRectF;
     }
-    private float[] getRectFRadius(boolean isBGRadius){
-        if(isBGRadius){
-            return new float[]{getRadius(),getRadius(),getRadius(),getRadius(),getRadius(),getRadius(),getRadius(),getRadius()};
+
+    private float[] getRectFRadius(boolean isBGRadius) {
+        if (isBGRadius) {
+            return new float[]{getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius()};
         }
-        float scale=getProgressRectF().height()*1f/getBorderRectF().height();
-        float tempRadius=getRadius()*scale;
-        return new float[]{tempRadius,tempRadius,tempRadius,tempRadius,tempRadius,tempRadius,tempRadius,tempRadius};
+        float scale = getProgressRectF().height() * 1f / getBorderRectF().height();
+        float tempRadius = getRadius() * scale;
+        return new float[]{tempRadius, tempRadius, tempRadius, tempRadius, tempRadius, tempRadius, tempRadius, tempRadius};
     }
-    private void needInvalidate(){
+
+    private void needInvalidate() {
         post(new Runnable() {
             @Override
             public void run() {
@@ -386,12 +389,13 @@ public class MyProgress extends View{
             }
         });
     }
+
     public int getBorderColor() {
         return borderColor;
     }
 
     public MyProgress setBorderColor(@ColorInt int borderColor) {
-        if(this.borderColor==borderColor){
+        if (this.borderColor == borderColor) {
             return this;
         }
         this.borderColor = borderColor;
@@ -404,11 +408,13 @@ public class MyProgress extends View{
     }
 
     public MyProgress setBorderWidth(float borderWidth) {
-        if(this.borderWidth==borderWidth){
+        if (this.borderWidth == borderWidth) {
             return this;
         }
         this.borderWidth = borderWidth;
         borderPaint.setStrokeWidth(borderWidth);
+        getBorderRectF();
+        getProgressRectF();
         return this;
     }
 
@@ -416,12 +422,12 @@ public class MyProgress extends View{
         return progressColor;
     }
 
-    public MyProgress setProgressColor( int progressColor) {
-        if(this.progressColor==progressColor){
+    public MyProgress setProgressColor(int progressColor) {
+        if (this.progressColor == progressColor) {
             return this;
         }
         this.progressColor = progressColor;
-        this.progressShader=null;
+        this.progressShader = null;
         progressPaint.setColor(progressColor);
         return this;
     }
@@ -431,7 +437,11 @@ public class MyProgress extends View{
     }
 
     public MyProgress setAllInterval(int allInterval) {
+        if (allInterval == this.allInterval) {
+            return this;
+        }
         this.allInterval = allInterval;
+        getProgressRectF();
         return this;
     }
 
@@ -440,7 +450,11 @@ public class MyProgress extends View{
     }
 
     public MyProgress setLeftInterval(int leftInterval) {
+        if(leftInterval==this.leftInterval){
+            return this;
+        }
         this.leftInterval = leftInterval;
+        getProgressRectF();
         return this;
     }
 
@@ -449,7 +463,11 @@ public class MyProgress extends View{
     }
 
     public MyProgress setTopInterval(int topInterval) {
+        if(topInterval==this.topInterval){
+            return this;
+        }
         this.topInterval = topInterval;
+        getProgressRectF();
         return this;
     }
 
@@ -458,7 +476,11 @@ public class MyProgress extends View{
     }
 
     public MyProgress setRightInterval(int rightInterval) {
+        if(rightInterval==this.rightInterval){
+            return this;
+        }
         this.rightInterval = rightInterval;
+        getProgressRectF();
         return this;
     }
 
@@ -467,11 +489,11 @@ public class MyProgress extends View{
     }
 
     public MyProgress setBottomInterval(int bottomInterval) {
-        if(bottomInterval==this.bottomInterval){
+        if (bottomInterval == this.bottomInterval) {
             return this;
         }
         this.bottomInterval = bottomInterval;
-        updateProgressPath();
+        getProgressRectF();
         return this;
     }
 
@@ -487,13 +509,15 @@ public class MyProgress extends View{
     public float getMaxProgress() {
         return maxProgress;
     }
-    public void complete(){
+
+    public void complete() {
         needInvalidate();
     }
+
     public MyProgress setMaxProgress(float maxProgress) {
-        if(maxProgress<=0){
-            this.maxProgress=0;
-        }else{
+        if (maxProgress <= 0) {
+            this.maxProgress = 0;
+        } else {
             this.maxProgress = maxProgress;
         }
         return this;
@@ -506,32 +530,33 @@ public class MyProgress extends View{
     public MyProgress setNowProgress(float progress) {
         return setNowProgress(progress, useAnimation);
     }
+
     public MyProgress setNowProgress(float progress, boolean useAnimation) {
-        float beforeProgress=this.scaleProgress;
-        if(progress> maxProgress){
+        float beforeProgress = this.scaleProgress;
+        if (progress > maxProgress) {
             this.nowProgress = maxProgress;
-        }else if(progress<0){
-            this.nowProgress =0;
-        }else{
+        } else if (progress < 0) {
+            this.nowProgress = 0;
+        } else {
             this.nowProgress = progress;
         }
-        if(useAnimation){
-            ValueAnimator valueAnimator=ValueAnimator.ofFloat(beforeProgress,this.nowProgress);
+        if (useAnimation) {
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(beforeProgress, this.nowProgress);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    MyProgress.this.scaleProgress= (float) animation.getAnimatedValue();
+                    MyProgress.this.scaleProgress = (float) animation.getAnimatedValue();
                     invalidate();
-                    setProgressToInter(MyProgress.this.scaleProgress,MyProgress.this.nowProgress,MyProgress.this.maxProgress);
+                    setProgressToInter(MyProgress.this.scaleProgress, MyProgress.this.nowProgress, MyProgress.this.maxProgress);
                 }
             });
             valueAnimator.setInterpolator(interpolator);
             valueAnimator.setDuration(duration);
             valueAnimator.start();
-        }else{
-            MyProgress.this.scaleProgress=this.nowProgress;
+        } else {
+            MyProgress.this.scaleProgress = this.nowProgress;
             invalidate();
-            setProgressToInter(MyProgress.this.scaleProgress,this.nowProgress,this.maxProgress);
+            setProgressToInter(MyProgress.this.scaleProgress, this.nowProgress, this.maxProgress);
         }
         return this;
     }
@@ -542,7 +567,7 @@ public class MyProgress extends View{
 
     public MyProgress setAngle(int angle) {
         this.angle = angle;
-        setRotateAngle(angle%360);
+        setRotateAngle(angle % 360);
         return this;
     }
 
@@ -564,7 +589,12 @@ public class MyProgress extends View{
     }
 
     public MyProgress setViewWidth(float viewWidth) {
+        if (viewWidth == this.viewWidth) {
+            return this;
+        }
         this.viewWidth = viewWidth;
+        getBorderRectF();
+        getProgressRectF();
         return this;
     }
 
@@ -573,7 +603,12 @@ public class MyProgress extends View{
     }
 
     public MyProgress setViewHeight(float viewHeight) {
+        if (viewHeight == this.viewHeight) {
+            return this;
+        }
         this.viewHeight = viewHeight;
+        getBorderRectF();
+        getProgressRectF();
         return this;
     }
 
@@ -582,7 +617,7 @@ public class MyProgress extends View{
     }
 
     public MyProgress setBgColor(int bgColor) {
-        if(this.bgColor==bgColor){
+        if (this.bgColor == bgColor) {
             return this;
         }
         this.bgColor = bgColor;
@@ -633,9 +668,9 @@ public class MyProgress extends View{
 
     public MyProgress setBorderShader(Shader borderShader) {
         this.borderShader = borderShader;
-        if(borderShader!=null){
+        if (borderShader != null) {
             borderPaint.setShader(borderShader);
-        }else{
+        } else {
             borderPaint.setShader(null);
         }
         return this;
@@ -646,13 +681,13 @@ public class MyProgress extends View{
     }
 
     public MyProgress setBgShader(Shader bgShader) {
-        if(bgShader==this.bgShader){
+        if (bgShader == this.bgShader) {
             return this;
         }
         this.bgShader = bgShader;
-        if(this.bgColor==Color.parseColor(def_bgColor)){
+        if (this.bgColor == Color.parseColor(def_bgColor)) {
             /*防止bgPaint设置透明色导致背景shader无效*/
-            this.bgColor=Color.WHITE;
+            this.bgColor = Color.WHITE;
         }
         bgPaint.setShader(bgShader);
         return this;
@@ -663,7 +698,7 @@ public class MyProgress extends View{
     }
 
     public MyProgress setProgressShader(Shader progressShader) {
-        if(progressShader==this.progressShader){
+        if (progressShader == this.progressShader) {
             return this;
         }
         this.progressShader = progressShader;
