@@ -67,7 +67,15 @@
                     android:layout_height="40dp"
                     android:background="@color/green"
                     android:gravity="center"
-                    android:text="进度颜色" />
+                    android:text="进度颜色"
+                    android:layout_marginRight="10dp"/>
+                <TextView
+                    android:id="@+id/tvProgressColorSecond"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:background="@color/blue"
+                    android:gravity="center"
+                    android:text="进度颜色Second" />
             </LinearLayout>
 
             <LinearLayout

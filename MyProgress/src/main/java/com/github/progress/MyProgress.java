@@ -57,15 +57,22 @@ public class MyProgress extends View {
     private int borderColor;
     private float borderWidth = 4;
     private int progressColor;
+    private int progressColorSecond;
     private int allInterval = 0;
     private int leftInterval;
     private int topInterval;
     private int rightInterval;
     private int bottomInterval;
     private boolean useAnimation = true;
-    private float nowProgress = 30;
+    private float nowProgress = 0;
     //用于动画计算
     private float scaleProgress = nowProgress;
+
+    private float nowProgressSecond = 0;
+    //用于动画计算
+    private float scaleProgressSecond = nowProgressSecond;
+
+
     private float maxProgress = 100;
     private int angle = 0;
     private int rotateAngle = 0;
@@ -77,8 +84,6 @@ public class MyProgress extends View {
     private boolean noBottomLeftRadius;
     private boolean noBottomRightRadius;
 
-    private float nowProgressSecond;
-    private int progressColorSecond;
 
     private boolean noTopLeftRadiusSecond;
     private boolean noTopRightRadiusSecond;
@@ -89,6 +94,7 @@ public class MyProgress extends View {
     private Shader borderShader;
     private Shader bgShader;
     private Shader progressShader;
+    private Shader progressShaderSecond;
 
 
     private final String def_borderColor = "#239936";
@@ -101,6 +107,11 @@ public class MyProgress extends View {
     /*progress*/
     private Paint progressPaint;
     private Path progressPath;
+
+
+    /*progressSecond*/
+    private Paint progressPaintSecond;
+    private Path progressPathSecond;
 
 
     /*bg*/
@@ -198,6 +209,7 @@ public class MyProgress extends View {
 
     private void initPath() {
         progressPath = new Path();
+        progressPathSecond = new Path();
         borderPath = new Path();
         bgPath = new Path();
     }
@@ -268,6 +280,10 @@ public class MyProgress extends View {
         progressPaint.setStyle(Paint.Style.FILL);
         progressPaint.setColor(progressColor);
 
+        progressPaintSecond = new Paint(Paint.ANTI_ALIAS_FLAG);
+        progressPaintSecond.setStyle(Paint.Style.FILL);
+        progressPaintSecond.setColor(progressColorSecond);
+
 
         helperPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         helperPaint.setStyle(Paint.Style.FILL);
@@ -297,13 +313,21 @@ public class MyProgress extends View {
         updateBGPath();
         updateBorderPath();
         updateProgressPath();
+        updateProgressPathSecond();
     }
 
     private void updateProgressPath() {
         progressPath.reset();
-        progressPath.addRoundRect(getProgressRectF(), getRectFRadius(false), Path.Direction.CW);
+        progressPath.addRoundRect(getProgressRectF(scaleProgress), getRectFRadius(false), Path.Direction.CW);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             progressPath.op(bgPath, Path.Op.INTERSECT);
+        }
+    }
+    private void updateProgressPathSecond() {
+        progressPathSecond.reset();
+        progressPathSecond.addRoundRect(getProgressRectF(scaleProgressSecond), getRectFRadius(false), Path.Direction.CW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            progressPathSecond.op(bgPath, Path.Op.INTERSECT);
         }
     }
 
@@ -336,6 +360,8 @@ public class MyProgress extends View {
 
             canvas.restoreToCount(count);
         }
+        canvas.drawPath(progressPathSecond, progressPaintSecond);
+
         canvas.drawPath(progressPath, progressPaint);
 
 
@@ -356,6 +382,9 @@ public class MyProgress extends View {
     }
 
     private RectF getProgressRectF() {
+        return getProgressRectF(scaleProgress);
+    }
+    private RectF getProgressRectF(float scaleProgress) {
         float leftOffset = leftInterval;
         float topOffset = topInterval;
         float rightOffset = rightInterval;
@@ -710,6 +739,13 @@ public class MyProgress extends View {
     }
 
     public MyProgress setProgressColorSecond(int progressColorSecond) {
+        if (this.progressColorSecond == progressColorSecond) {
+            return this;
+        }
+        this.progressShaderSecond = null;
+        progressPaintSecond.setColor(progressColorSecond);
+        progressPaintSecond.setShader(null);
+
         this.progressColorSecond = progressColorSecond;
         return this;
     }
@@ -765,6 +801,19 @@ public class MyProgress extends View {
         }
         this.progressShader = progressShader;
         progressPaint.setShader(progressShader);
+        return this;
+    }
+
+    public Shader getProgressShaderSecond() {
+        return progressShaderSecond;
+    }
+
+    public MyProgress setProgressShaderSecond(Shader progressShaderSecond) {
+        if (progressShaderSecond == this.progressShaderSecond) {
+            return this;
+        }
+        this.progressShaderSecond = progressShaderSecond;
+        progressPaintSecond.setShader(progressShaderSecond);
         return this;
     }
 
