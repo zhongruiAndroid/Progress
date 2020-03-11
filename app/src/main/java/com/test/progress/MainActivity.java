@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         mp.setOnProgressInter(new MyProgress.OnProgressInter() {
             @Override
             public void progress(float animProgress, float progress, float max) {
-                Log.i("======", animProgress + "==" + progress + "===" + max);
+//                Log.i("======", animProgress + "==" + progress + "===" + max);
             }
         });
 
