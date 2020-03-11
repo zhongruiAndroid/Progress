@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +22,7 @@ import com.github.progress.MyProgress;
 import com.github.selectcolordialog.SelectColorDialog;
 import com.github.selectcolordialog.SelectColorListener;
 
-public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, OnClickListener {
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, OnClickListener, CompoundButton.OnCheckedChangeListener {
     MyProgress mp;
     SeekBar sb_angle;
     SeekBar sb_round;
@@ -40,7 +41,17 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     private TextView tvProgressColor;
     private CheckBox cbShowAnim;
     private SelectColorDialog selectColorDialog;
+    
+    
+    private AppCompatCheckBox cbTopLeftNoRadius;
+    private AppCompatCheckBox cbTopRightNoRadius;
+    private AppCompatCheckBox cbBottomRightNoRadius;
+    private AppCompatCheckBox cbBottomLeftNoRadius;
 
+    private AppCompatCheckBox cbTopLeftNoRadius2;
+    private AppCompatCheckBox cbTopRightNoRadius2;
+    private AppCompatCheckBox cbBottomRightNoRadius2;
+    private AppCompatCheckBox cbBottomLeftNoRadius2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,15 +182,40 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         sbBorderWidth = (SeekBar) findViewById(R.id.sbBorderWidth);
         sbBorderWidth.setOnSeekBarChangeListener(this);
 
-        tvBgColor = (TextView) findViewById(R.id.tvBgColor);
+        tvBgColor =  findViewById(R.id.tvBgColor);
         tvBgColor.setOnClickListener(this);
 
-        tvBorderColor = (TextView) findViewById(R.id.tvBorderColor);
+        tvBorderColor =  findViewById(R.id.tvBorderColor);
         tvBorderColor.setOnClickListener(this);
 
-        tvProgressColor = (TextView) findViewById(R.id.tvProgressColor);
+        tvProgressColor =  findViewById(R.id.tvProgressColor);
         tvProgressColor.setOnClickListener(this);
 
+        cbTopLeftNoRadius =  findViewById(R.id.cbTopLeftNoRadius);
+        cbTopLeftNoRadius.setOnCheckedChangeListener(this);
+
+        cbTopRightNoRadius =  findViewById(R.id.cbTopRightNoRadius);
+        cbTopRightNoRadius.setOnCheckedChangeListener(this);
+
+        cbBottomRightNoRadius =  findViewById(R.id.cbBottomRightNoRadius);
+        cbBottomRightNoRadius.setOnCheckedChangeListener(this);
+
+        cbBottomLeftNoRadius =  findViewById(R.id.cbBottomLeftNoRadius);
+        cbBottomLeftNoRadius.setOnCheckedChangeListener(this);
+
+
+
+        cbTopLeftNoRadius2 =  findViewById(R.id.cbTopLeftNoRadius2);
+        cbTopLeftNoRadius2.setOnCheckedChangeListener(this);
+
+        cbTopRightNoRadius2 =  findViewById(R.id.cbTopRightNoRadius2);
+        cbTopRightNoRadius2.setOnCheckedChangeListener(this);
+
+        cbBottomRightNoRadius2 =  findViewById(R.id.cbBottomRightNoRadius2);
+        cbBottomRightNoRadius2.setOnCheckedChangeListener(this);
+
+        cbBottomLeftNoRadius2 =  findViewById(R.id.cbBottomLeftNoRadius2);
+        cbBottomLeftNoRadius2.setOnCheckedChangeListener(this);
 
     }
 
@@ -244,4 +280,33 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
 
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()){
+            case R.id.cbTopLeftNoRadius:
+                mp.setNoTopLeftRadius(isChecked).complete();
+            break;
+            case R.id.cbTopRightNoRadius:
+                mp.setNoTopRightRadius(isChecked).complete();
+            break;
+            case R.id.cbBottomRightNoRadius:
+                mp.setNoBottomRightRadius(isChecked).complete();
+            break;
+            case R.id.cbBottomLeftNoRadius:
+                mp.setNoBottomLeftRadius(isChecked).complete();
+            break;
+            case R.id.cbTopLeftNoRadius2:
+                mp.setNoTopLeftRadiusSecond(isChecked).complete();
+                break;
+            case R.id.cbTopRightNoRadius2:
+                mp.setNoTopRightRadiusSecond(isChecked).complete();
+                break;
+            case R.id.cbBottomRightNoRadius2:
+                mp.setNoBottomRightRadiusSecond(isChecked).complete();
+                break;
+            case R.id.cbBottomLeftNoRadius2:
+                mp.setNoBottomLeftRadiusSecond(isChecked).complete();
+                break;
+        }
+    }
 }

@@ -411,8 +411,9 @@ public class MyProgress extends View {
         return new float[]{
                 noTopLeftRadius ? 0 : tempRadius, noTopLeftRadius ? 0 : tempRadius,
                 noTopRightRadius ? 0 : tempRadius, noTopRightRadius ? 0 : tempRadius,
-                noBottomLeftRadius ? 0 : tempRadius, noBottomLeftRadius ? 0 : tempRadius,
-                noBottomRightRadius ? 0 : tempRadius, noBottomRightRadius ? 0 : tempRadius};
+                noBottomRightRadius ? 0 : tempRadius, noBottomRightRadius ? 0 : tempRadius,
+                noBottomLeftRadius ? 0 : tempRadius, noBottomLeftRadius ? 0 : tempRadius
+        };
     }
 
     private float[] getRectFRadiusSecond(boolean isBGRadius) {
@@ -424,8 +425,9 @@ public class MyProgress extends View {
         return new float[]{
                 noTopLeftRadiusSecond ? 0 : tempRadius, noTopLeftRadiusSecond ? 0 : tempRadius,
                 noTopRightRadiusSecond ? 0 : tempRadius, noTopRightRadiusSecond ? 0 : tempRadius,
-                noBottomLeftRadiusSecond ? 0 : tempRadius, noBottomLeftRadiusSecond ? 0 : tempRadius,
-                noBottomRightRadiusSecond ? 0 : tempRadius, noBottomRightRadiusSecond ? 0 : tempRadius};
+                noBottomRightRadiusSecond ? 0 : tempRadius, noBottomRightRadiusSecond ? 0 : tempRadius,
+                noBottomLeftRadiusSecond ? 0 : tempRadius, noBottomLeftRadiusSecond ? 0 : tempRadius
+        };
     }
 
     private void needInvalidate() {
@@ -763,6 +765,82 @@ public class MyProgress extends View {
         }
         this.progressShader = progressShader;
         progressPaint.setShader(progressShader);
+        return this;
+    }
+
+    public boolean isNoTopLeftRadius() {
+        return noTopLeftRadius;
+    }
+
+    public MyProgress setNoTopLeftRadius(boolean noTopLeftRadius) {
+        this.noTopLeftRadius = noTopLeftRadius;
+        updateProgressPath();
+        return this;
+    }
+
+    public boolean isNoTopRightRadius() {
+        return noTopRightRadius;
+    }
+
+    public MyProgress setNoTopRightRadius(boolean noTopRightRadius) {
+        this.noTopRightRadius = noTopRightRadius;
+        updateProgressPath();
+        return this;
+    }
+
+    public boolean isNoBottomLeftRadius() {
+        return noBottomLeftRadius;
+    }
+
+    public MyProgress setNoBottomLeftRadius(boolean noBottomLeftRadius) {
+        this.noBottomLeftRadius = noBottomLeftRadius;
+        updateProgressPath();
+        return this;
+    }
+
+    public boolean isNoBottomRightRadius() {
+        return noBottomRightRadius;
+    }
+
+    public MyProgress setNoBottomRightRadius(boolean noBottomRightRadius) {
+        this.noBottomRightRadius = noBottomRightRadius;
+        updateProgressPath();
+        return this;
+    }
+
+    public boolean isNoTopLeftRadiusSecond() {
+        return noTopLeftRadiusSecond;
+    }
+
+    public MyProgress setNoTopLeftRadiusSecond(boolean noTopLeftRadiusSecond) {
+        this.noTopLeftRadiusSecond = noTopLeftRadiusSecond;
+        return this;
+    }
+
+    public boolean isNoTopRightRadiusSecond() {
+        return noTopRightRadiusSecond;
+    }
+
+    public MyProgress setNoTopRightRadiusSecond(boolean noTopRightRadiusSecond) {
+        this.noTopRightRadiusSecond = noTopRightRadiusSecond;
+        return this;
+    }
+
+    public boolean isNoBottomLeftRadiusSecond() {
+        return noBottomLeftRadiusSecond;
+    }
+
+    public MyProgress setNoBottomLeftRadiusSecond(boolean noBottomLeftRadiusSecond) {
+        this.noBottomLeftRadiusSecond = noBottomLeftRadiusSecond;
+        return this;
+    }
+
+    public boolean isNoBottomRightRadiusSecond() {
+        return noBottomRightRadiusSecond;
+    }
+
+    public MyProgress setNoBottomRightRadiusSecond(boolean noBottomRightRadiusSecond) {
+        this.noBottomRightRadiusSecond = noBottomRightRadiusSecond;
         return this;
     }
 }
