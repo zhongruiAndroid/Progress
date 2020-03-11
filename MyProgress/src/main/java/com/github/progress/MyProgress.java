@@ -356,8 +356,6 @@ public class MyProgress extends View {
     }
 
     private RectF getProgressRectF() {
-        float progressWidth = viewWidth;
-        float progressHeight = viewHeight;
         float leftOffset = leftInterval;
         float topOffset = topInterval;
         float rightOffset = rightInterval;
@@ -368,15 +366,22 @@ public class MyProgress extends View {
             rightOffset = allInterval;
             bottomOffset = allInterval;
         }
-        progressWidth = viewWidth - leftOffset - rightOffset - getBorderWidth()*2;
-        progressHeight = viewHeight - topOffset - bottomOffset - getBorderWidth()*2;
+        float progressWidth = viewWidth - leftOffset - rightOffset - getBorderWidth() * 2;
 
         float tempBorderW = borderWidth;
         if (maxProgress <= 0) {
             if (progressRectF == null) {
-                progressRectF = new RectF(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset + tempBorderW, viewHeight / 2 - bottomOffset - tempBorderW);
+                progressRectF = new RectF(
+                        -viewWidth / 2 + leftOffset + tempBorderW,
+                        -viewHeight / 2 + topOffset + tempBorderW,
+                        viewWidth / 2 - leftOffset - tempBorderW,
+                        viewHeight / 2 - bottomOffset - tempBorderW);
             } else {
-                progressRectF.set(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset + tempBorderW, viewHeight / 2 - bottomOffset - tempBorderW);
+                progressRectF.set(
+                        -viewWidth / 2 + leftOffset + tempBorderW,
+                        -viewHeight / 2 + topOffset + tempBorderW,
+                        viewWidth / 2 - leftOffset - tempBorderW,
+                        viewHeight / 2 - bottomOffset - tempBorderW);
             }
         } else {
             if (progressRectF == null) {
