@@ -257,7 +257,7 @@ public class MyProgress extends View {
         borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setColor(borderColor);
-        borderPaint.setStrokeWidth(borderWidth);
+        borderPaint.setStrokeWidth(borderWidth * 2);
 
         bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setStyle(Paint.Style.FILL);
@@ -348,9 +348,9 @@ public class MyProgress extends View {
 
     private RectF getBorderRectF() {
         if (borderRectF == null) {
-            borderRectF = new RectF(-viewWidth / 2 + borderWidth / 2, -viewHeight / 2 + borderWidth / 2, viewWidth / 2 - borderWidth / 2, viewHeight / 2 - borderWidth / 2);
+            borderRectF = new RectF(-viewWidth / 2 + borderWidth, -viewHeight / 2 + borderWidth, viewWidth / 2 - borderWidth, viewHeight / 2 - borderWidth);
         } else {
-            borderRectF.set(-viewWidth / 2 + borderWidth / 2, -viewHeight / 2 + borderWidth / 2, viewWidth / 2 - borderWidth / 2, viewHeight / 2 - borderWidth / 2);
+            borderRectF.set(-viewWidth / 2 + borderWidth, -viewHeight / 2 + borderWidth, viewWidth / 2 - borderWidth, viewHeight / 2 - borderWidth);
         }
         return borderRectF;
     }
@@ -363,18 +363,15 @@ public class MyProgress extends View {
         float rightOffset = rightInterval;
         float bottomOffset = bottomInterval;
         if (allInterval > 0) {
-            progressWidth = viewWidth - allInterval * 2 - getBorderWidth();
-            progressHeight = viewHeight - allInterval * 2 - getBorderWidth();
             leftOffset = allInterval;
             topOffset = allInterval;
             rightOffset = allInterval;
             bottomOffset = allInterval;
-        } else {
-            progressWidth = viewWidth - leftOffset - rightOffset - getBorderWidth();
-            progressHeight = viewHeight - topInterval - bottomInterval - getBorderWidth();
         }
+        progressWidth = viewWidth - leftOffset - rightOffset - getBorderWidth()*2;
+        progressHeight = viewHeight - topOffset - bottomOffset - getBorderWidth()*2;
 
-        float tempBorderW = borderWidth / 2;
+        float tempBorderW = borderWidth;
         if (maxProgress <= 0) {
             if (progressRectF == null) {
                 progressRectF = new RectF(-viewWidth / 2 + leftOffset + tempBorderW, -viewHeight / 2 + topOffset + tempBorderW, -viewWidth / 2 + leftOffset + tempBorderW, viewHeight / 2 - bottomOffset - tempBorderW);
@@ -457,7 +454,7 @@ public class MyProgress extends View {
             return this;
         }
         this.borderWidth = borderWidth;
-        borderPaint.setStrokeWidth(borderWidth);
+        borderPaint.setStrokeWidth(borderWidth * 2);
 
         updateBGPath();
         updateBorderPath();
