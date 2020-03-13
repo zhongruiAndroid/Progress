@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     Button btLookBitmapProgress;
 
     private SeekBar sbProgress;
+    private SeekBar sbProgressSecond;
     private SeekBar sbBorderWidth;
     private TextView tvBgColor;
     private TextView tvBorderColor;
@@ -170,6 +171,9 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         sbProgress = (SeekBar) findViewById(R.id.sbProgress);
         sbProgress.setOnSeekBarChangeListener(this);
 
+        sbProgressSecond = (SeekBar) findViewById(R.id.sbProgressSecond);
+        sbProgressSecond.setOnSeekBarChangeListener(this);
+
 
         cbShowAnim = findViewById(R.id.cbShowAnim);
         cbShowAnim.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -263,6 +267,9 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         switch (seekBar.getId()) {
             case R.id.sbProgress:
                 mp.setNowProgress(progress).complete();
+                break;
+            case R.id.sbProgressSecond:
+                mp.setNowProgressSecond(progress).complete();
                 break;
             case R.id.sbBorderWidth:
                 mp.setBorderWidth(progress / 3).complete();

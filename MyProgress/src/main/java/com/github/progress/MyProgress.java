@@ -28,9 +28,11 @@ import android.view.animation.DecelerateInterpolator;
 
 public class MyProgress extends View {
     private OnProgressInter onProgressInter;
+    private OnProgressInter onProgressInterSecond;
     private RectF borderRectF;
     private RectF progressRectF;
     private ValueAnimator valueAnimator;
+    private ValueAnimator valueAnimatorSecond;
 
     public interface OnProgressInter {
         void progress(float animProgress, float progress, float max);
@@ -44,9 +46,23 @@ public class MyProgress extends View {
         this.onProgressInter = onProgressInter;
     }
 
+    public OnProgressInter getOnProgressInterSecond() {
+        return onProgressInterSecond;
+    }
+
+    public void setOnProgressInterSecond(OnProgressInter onProgressInterSecond) {
+        this.onProgressInterSecond = onProgressInterSecond;
+    }
+
     private void setProgressToInter(float scaleProgress, float progress, float max) {
         if (onProgressInter != null) {
             onProgressInter.progress(scaleProgress, progress, max);
+        }
+    }
+
+    private void setProgressToInterSecond(float scaleProgress, float progress, float max) {
+        if (onProgressInterSecond != null) {
+            onProgressInterSecond.progress(scaleProgress, progress, max);
         }
     }
 
@@ -323,6 +339,7 @@ public class MyProgress extends View {
             progressPath.op(bgPath, Path.Op.INTERSECT);
         }
     }
+
     private void updateProgressPathSecond() {
         progressPathSecond.reset();
         progressPathSecond.addRoundRect(getProgressRectF(scaleProgressSecond), getRectFRadius(false), Path.Direction.CW);
@@ -384,6 +401,7 @@ public class MyProgress extends View {
     private RectF getProgressRectF() {
         return getProgressRectF(scaleProgress);
     }
+
     private RectF getProgressRectF(float scaleProgress) {
         float leftOffset = leftInterval;
         float topOffset = topInterval;
@@ -623,6 +641,7 @@ public class MyProgress extends View {
         }
         if (useAnimation) {
             valueAnimator = ValueAnimator.ofFloat(beforeProgress, this.nowProgress);
+            valueAnimator.removeAllUpdateListeners();
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -730,8 +749,43 @@ public class MyProgress extends View {
     }
 
     public MyProgress setNowProgressSecond(float nowProgressSecond) {
-        this.nowProgressSecond = nowProgressSecond;
+        return setNowProgressSecond(nowProgressSecond, useAnimation);
+    }
+    public MyProgress setNowProgressSecondByProgress(float nowProgressSecond) {
+        return setNowProgressSecond(getNowProgress()+nowProgressSecond, useAnimation);
+    }
+    public MyProgress setNowProgressSecond(float nowProgressSecond, boolean useAnimation) {
+        float beforeProgress = this.scaleProgressSecond;
+        if (nowProgressSecond > maxProgress) {
+            this.nowProgressSecond = maxProgress;
+        } else if (nowProgressSecond < 0) {
+            this.nowProgressSecond = 0;
+        } else {
+            this.nowProgressSecond = nowProgressSecond;
+        }
+        if (useAnimation) {
+            valueAnimatorSecond = ValueAnimator.ofFloat(beforeProgress, this.nowProgressSecond);
+            valueAnimatorSecond.removeAllUpdateListeners();
+            valueAnimatorSecond.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    MyProgress.this.scaleProgressSecond = (float) animation.getAnimatedValue();
+                    updateProgressPathSecond();
+                    invalidate();
+                    setProgressToInterSecond(MyProgress.this.scaleProgressSecond, MyProgress.this.nowProgressSecond, MyProgress.this.maxProgress);
+                }
+            });
+            valueAnimatorSecond.setInterpolator(interpolator);
+            valueAnimatorSecond.setDuration(duration);
+            valueAnimatorSecond.start();
+        } else {
+            MyProgress.this.scaleProgressSecond = this.nowProgressSecond;
+            updateProgressPathSecond();
+            invalidate();
+            setProgressToInterSecond(MyProgress.this.scaleProgressSecond, this.nowProgressSecond, this.maxProgress);
+        }
         return this;
+
     }
 
     public int getProgressColorSecond() {
