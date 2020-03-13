@@ -194,7 +194,7 @@ public class MyProgress extends View {
         noBottomRightRadius = typedArray.getBoolean(R.styleable.MyProgress_noBottomRightRadius, false);
 
         nowProgressSecond = typedArray.getDimension(R.styleable.MyProgress_nowProgressSecond, 0);
-        progressColorSecond = typedArray.getColor(R.styleable.MyProgress_progressColorSecond, Color.TRANSPARENT);
+        progressColorSecond = typedArray.getColor(R.styleable.MyProgress_progressColorSecond, Color.parseColor("#4ed3fd"));
 
 
         noTopLeftRadiusSecond = typedArray.getBoolean(R.styleable.MyProgress_noTopLeftRadiusSecond, false);
@@ -342,7 +342,7 @@ public class MyProgress extends View {
 
     private void updateProgressPathSecond() {
         progressPathSecond.reset();
-        progressPathSecond.addRoundRect(getProgressRectF(scaleProgressSecond), getRectFRadius(false), Path.Direction.CW);
+        progressPathSecond.addRoundRect(getProgressRectF(scaleProgressSecond), getRectFRadiusSecond(false), Path.Direction.CW);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             progressPathSecond.op(bgPath, Path.Op.INTERSECT);
         }
@@ -398,9 +398,9 @@ public class MyProgress extends View {
         return borderRectF;
     }
 
-    private RectF getProgressRectF() {
+ /*   private RectF getProgressRectF() {
         return getProgressRectF(scaleProgress);
-    }
+    }*/
 
     private RectF getProgressRectF(float scaleProgress) {
         float leftOffset = leftInterval;
@@ -453,7 +453,7 @@ public class MyProgress extends View {
         if (isBGRadius) {
             return new float[]{getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius()};
         }
-        float scale = getProgressRectF().height() * 1f / getBorderRectF().height();
+        float scale = getProgressRectF(scaleProgress).height() * 1f / getBorderRectF().height();
         float tempRadius = getRadius() * scale;
         return new float[]{
                 noTopLeftRadius ? 0 : tempRadius, noTopLeftRadius ? 0 : tempRadius,
@@ -467,7 +467,7 @@ public class MyProgress extends View {
         if (isBGRadius) {
             return new float[]{getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius(), getRadius()};
         }
-        float scale = getProgressRectF().height() * 1f / getBorderRectF().height();
+        float scale = getProgressRectF(scaleProgressSecond).height() * 1f / getBorderRectF().height();
         float tempRadius = getRadius() * scale;
         return new float[]{
                 noTopLeftRadiusSecond ? 0 : tempRadius, noTopLeftRadiusSecond ? 0 : tempRadius,
@@ -513,6 +513,7 @@ public class MyProgress extends View {
         updateBGPath();
         updateBorderPath();
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -541,6 +542,7 @@ public class MyProgress extends View {
         }
         this.allInterval = allInterval;
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -554,6 +556,7 @@ public class MyProgress extends View {
         }
         this.leftInterval = leftInterval;
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -567,6 +570,7 @@ public class MyProgress extends View {
         }
         this.topInterval = topInterval;
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -580,6 +584,7 @@ public class MyProgress extends View {
         }
         this.rightInterval = rightInterval;
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -593,6 +598,7 @@ public class MyProgress extends View {
         }
         this.bottomInterval = bottomInterval;
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -698,6 +704,7 @@ public class MyProgress extends View {
         updateBGPath();
         updateBorderPath();
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -713,6 +720,7 @@ public class MyProgress extends View {
         updateBGPath();
         updateBorderPath();
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -741,6 +749,7 @@ public class MyProgress extends View {
         updateBGPath();
         updateBorderPath();
         updateProgressPath();
+        updateProgressPathSecond();
         return this;
     }
 
@@ -751,9 +760,11 @@ public class MyProgress extends View {
     public MyProgress setNowProgressSecond(float nowProgressSecond) {
         return setNowProgressSecond(nowProgressSecond, useAnimation);
     }
+
     public MyProgress setNowProgressSecondByProgress(float nowProgressSecond) {
-        return setNowProgressSecond(getNowProgress()+nowProgressSecond, useAnimation);
+        return setNowProgressSecond(getNowProgress() + nowProgressSecond, useAnimation);
     }
+
     public MyProgress setNowProgressSecond(float nowProgressSecond, boolean useAnimation) {
         float beforeProgress = this.scaleProgressSecond;
         if (nowProgressSecond > maxProgress) {
@@ -917,6 +928,7 @@ public class MyProgress extends View {
 
     public MyProgress setNoTopLeftRadiusSecond(boolean noTopLeftRadiusSecond) {
         this.noTopLeftRadiusSecond = noTopLeftRadiusSecond;
+        updateProgressPathSecond();
         return this;
     }
 
@@ -926,6 +938,7 @@ public class MyProgress extends View {
 
     public MyProgress setNoTopRightRadiusSecond(boolean noTopRightRadiusSecond) {
         this.noTopRightRadiusSecond = noTopRightRadiusSecond;
+        updateProgressPathSecond();
         return this;
     }
 
@@ -935,6 +948,7 @@ public class MyProgress extends View {
 
     public MyProgress setNoBottomLeftRadiusSecond(boolean noBottomLeftRadiusSecond) {
         this.noBottomLeftRadiusSecond = noBottomLeftRadiusSecond;
+        updateProgressPathSecond();
         return this;
     }
 
@@ -944,6 +958,7 @@ public class MyProgress extends View {
 
     public MyProgress setNoBottomRightRadiusSecond(boolean noBottomRightRadiusSecond) {
         this.noBottomRightRadiusSecond = noBottomRightRadiusSecond;
+        updateProgressPathSecond();
         return this;
     }
 }
