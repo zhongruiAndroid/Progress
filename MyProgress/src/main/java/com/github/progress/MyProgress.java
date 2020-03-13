@@ -124,6 +124,7 @@ public class MyProgress extends View {
     private Paint progressPaint;
     private Path progressPath;
 
+    private Path clipPath;
 
     /*progressSecond*/
     private Paint progressPaintSecond;
@@ -332,6 +333,21 @@ public class MyProgress extends View {
         updateProgressPathSecond();
     }
 
+
+    private void updateClipPath() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        if (clipPath == null) {
+            clipPath = new Path();
+        } else {
+            clipPath.reset();
+        }
+
+        RectF rectF = new RectF(-viewWidth / 2, -viewHeight / 2, viewWidth / 2, viewHeight / 2);
+        clipPath.addRoundRect(rectF, getRectFRadius(true), Path.Direction.CW);
+    }
+
     private void updateProgressPath() {
         progressPath.reset();
         progressPath.addRoundRect(getProgressRectF(scaleProgress), getRectFRadius(false), Path.Direction.CW);
@@ -351,6 +367,7 @@ public class MyProgress extends View {
     private void updateBorderPath() {
         borderPath.reset();
         borderPath.addRoundRect(getBorderRectF(), getRectFRadius(true), Path.Direction.CW);
+        updateClipPath();
     }
 
     @Override
@@ -361,8 +378,8 @@ public class MyProgress extends View {
             canvas.rotate(rotateAngle);
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            canvas.clipPath(bgPath);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT && clipPath != null) {
+            canvas.clipPath(clipPath);
         }
 
 
