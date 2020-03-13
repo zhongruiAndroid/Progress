@@ -35,7 +35,7 @@ public class MyProgress extends View {
     private ValueAnimator valueAnimatorSecond;
 
     public interface OnProgressInter {
-        void progress(float animProgress, float progress, float max);
+        void progress(float animProgress, float progress, float maxProgress);
     }
 
     public OnProgressInter getOnProgressInter() {

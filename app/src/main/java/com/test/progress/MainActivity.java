@@ -89,6 +89,12 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
 //                Log.i("======", animProgress + "==" + progress + "===" + max);
             }
         });
+        mp.setOnProgressInterSecond(new MyProgress.OnProgressInter() {
+            @Override
+            public void progress(float animProgress, float progress, float max) {
+
+            }
+        });
 
         sb_round.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
