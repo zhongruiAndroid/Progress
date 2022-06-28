@@ -13,13 +13,14 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 
 /**
@@ -254,7 +255,12 @@ public class MyProgress extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+
         int mWidth = 400;
         int mHeight = 30;
         if (viewWidth + 0 > mWidth) {
@@ -263,15 +269,9 @@ public class MyProgress extends View {
         if (viewHeight + 0 > mHeight) {
             mHeight = (int) (viewHeight + 0);
         }
-        if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT && getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            setMeasuredDimension(mWidth, mHeight);
-        } else if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            setMeasuredDimension(mWidth, heightSize);
-        } else if (getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            setMeasuredDimension(widthSize, mHeight);
-        } else {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
+        setMeasuredDimension(
+                widthMode == MeasureSpec.EXACTLY ? widthSize : Math.min(mWidth, widthSize),
+                heightMode == MeasureSpec.EXACTLY ? heightSize : Math.min(mHeight, heightSize));
     }
 
 
@@ -373,26 +373,27 @@ public class MyProgress extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        canvas.translate(getWidth() / 2, getHeight() / 2);
+        canvas.translate(getWidth() / 2f, getHeight() / 2f);
         if (rotateAngle > 0) {
             canvas.rotate(rotateAngle);
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT && clipPath != null) {
+        if (clipPath != null) {
             canvas.clipPath(clipPath);
         }
 
 
-        canvas.drawPath(bgPath, bgPaint);
 
         if (borderWidth > 0) {
-            int count = canvas.saveLayer(-viewWidth / 2, -viewHeight / 2, viewWidth / 2, viewHeight / 2, null, Canvas.ALL_SAVE_FLAG);
+            int count = canvas.saveLayer(-viewWidth / 2f, -viewHeight / 2f, viewWidth / 2f, viewHeight / 2f, null, Canvas.ALL_SAVE_FLAG);
             canvas.drawPath(borderPath, borderPaint);
 
-            helperPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-            canvas.drawPath(bgPath, helperPaint);
-
+            bgPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            canvas.drawPath(bgPath, bgPaint);
+            bgPaint.setXfermode(null);
             canvas.restoreToCount(count);
+        }else{
+            canvas.drawPath(bgPath, bgPaint);
         }
         canvas.drawPath(progressPathSecond, progressPaintSecond);
 
