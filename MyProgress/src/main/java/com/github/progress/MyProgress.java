@@ -15,7 +15,6 @@ import android.graphics.Shader;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.ColorInt;
@@ -125,7 +124,6 @@ public class MyProgress extends View {
     private Paint progressPaint;
     private Path progressPath;
 
-    private Path clipPath;
 
     /*progressSecond*/
     private Paint progressPaintSecond;
@@ -286,7 +284,7 @@ public class MyProgress extends View {
         borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setColor(borderColor);
-        borderPaint.setStrokeWidth(borderWidth * 2);
+        borderPaint.setStrokeWidth(borderWidth * 2f);
 
         bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setStyle(Paint.Style.FILL);
@@ -334,20 +332,6 @@ public class MyProgress extends View {
     }
 
 
-    private void updateClipPath() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return;
-        }
-        if (clipPath == null) {
-            clipPath = new Path();
-        } else {
-            clipPath.reset();
-        }
-
-        RectF rectF = new RectF(-viewWidth / 2, -viewHeight / 2, viewWidth / 2, viewHeight / 2);
-        clipPath.addRoundRect(rectF, getRectFRadius(true), Path.Direction.CW);
-    }
-
     private void updateProgressPath() {
         progressPath.reset();
         progressPath.addRoundRect(getProgressRectF(scaleProgress), getRectFRadius(false), Path.Direction.CW);
@@ -367,7 +351,6 @@ public class MyProgress extends View {
     private void updateBorderPath() {
         borderPath.reset();
         borderPath.addRoundRect(getBorderRectF(), getRectFRadius(true), Path.Direction.CW);
-        updateClipPath();
     }
 
     @Override
@@ -378,12 +361,6 @@ public class MyProgress extends View {
             canvas.rotate(rotateAngle);
         }
 
-        if (clipPath != null) {
-            canvas.clipPath(clipPath);
-        }
-
-
-
         if (borderWidth > 0) {
             int count = canvas.saveLayer(-viewWidth / 2f, -viewHeight / 2f, viewWidth / 2f, viewHeight / 2f, null, Canvas.ALL_SAVE_FLAG);
             canvas.drawPath(borderPath, borderPaint);
@@ -392,7 +369,7 @@ public class MyProgress extends View {
             canvas.drawPath(bgPath, bgPaint);
             bgPaint.setXfermode(null);
             canvas.restoreToCount(count);
-        }else{
+        } else {
             canvas.drawPath(bgPath, bgPaint);
         }
         canvas.drawPath(progressPathSecond, progressPaintSecond);
@@ -409,16 +386,13 @@ public class MyProgress extends View {
 
     private RectF getBorderRectF() {
         if (borderRectF == null) {
-            borderRectF = new RectF(-viewWidth / 2 + borderWidth, -viewHeight / 2 + borderWidth, viewWidth / 2 - borderWidth, viewHeight / 2 - borderWidth);
+            borderRectF = new RectF(-viewWidth / 2f + borderWidth, -viewHeight / 2f + borderWidth, viewWidth / 2f - borderWidth, viewHeight / 2f - borderWidth);
         } else {
-            borderRectF.set(-viewWidth / 2 + borderWidth, -viewHeight / 2 + borderWidth, viewWidth / 2 - borderWidth, viewHeight / 2 - borderWidth);
+            borderRectF.set(-viewWidth / 2f + borderWidth, -viewHeight / 2f + borderWidth, viewWidth / 2f - borderWidth, viewHeight / 2f - borderWidth);
         }
         return borderRectF;
     }
 
- /*   private RectF getProgressRectF() {
-        return getProgressRectF(scaleProgress);
-    }*/
 
     private RectF getProgressRectF(float scaleProgress) {
         float leftOffset = leftInterval;
@@ -431,37 +405,37 @@ public class MyProgress extends View {
             rightOffset = allInterval;
             bottomOffset = allInterval;
         }
-        float progressWidth = viewWidth - leftOffset - rightOffset - getBorderWidth() * 2;
+        float progressWidth = viewWidth - leftOffset - rightOffset - getBorderWidth() * 2f;
 
         float tempBorderW = borderWidth;
         if (maxProgress <= 0) {
             if (progressRectF == null) {
                 progressRectF = new RectF(
-                        -viewWidth / 2 + leftOffset + tempBorderW,
-                        -viewHeight / 2 + topOffset + tempBorderW,
-                        viewWidth / 2 - leftOffset - tempBorderW,
-                        viewHeight / 2 - bottomOffset - tempBorderW);
+                        -viewWidth / 2f + leftOffset + tempBorderW,
+                        -viewHeight / 2f + topOffset + tempBorderW,
+                        viewWidth / 2f - leftOffset - tempBorderW,
+                        viewHeight / 2f - bottomOffset - tempBorderW);
             } else {
                 progressRectF.set(
-                        -viewWidth / 2 + leftOffset + tempBorderW,
-                        -viewHeight / 2 + topOffset + tempBorderW,
-                        viewWidth / 2 - leftOffset - tempBorderW,
-                        viewHeight / 2 - bottomOffset - tempBorderW);
+                        -viewWidth / 2f + leftOffset + tempBorderW,
+                        -viewHeight / 2f + topOffset + tempBorderW,
+                        viewWidth / 2f - leftOffset - tempBorderW,
+                        viewHeight / 2f - bottomOffset - tempBorderW);
             }
         } else {
             if (progressRectF == null) {
                 progressRectF = new RectF(
-                        -viewWidth / 2 + leftOffset + tempBorderW,
-                        -viewHeight / 2 + topOffset + tempBorderW,
-                        (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset) + tempBorderW,
-                        viewHeight / 2 - bottomOffset - tempBorderW);
+                        -viewWidth / 2f + leftOffset + tempBorderW,
+                        -viewHeight / 2f + topOffset + tempBorderW,
+                        (progressWidth * scaleProgress / maxProgress - viewWidth / 2f + leftOffset) + tempBorderW,
+                        viewHeight / 2f - bottomOffset - tempBorderW);
             } else {
 
                 progressRectF.set(
-                        -viewWidth / 2 + leftOffset + tempBorderW,
-                        -viewHeight / 2 + topOffset + tempBorderW,
-                        (progressWidth * scaleProgress / maxProgress - viewWidth / 2 + leftOffset) + tempBorderW,
-                        viewHeight / 2 - bottomOffset - tempBorderW);
+                        -viewWidth / 2f + leftOffset + tempBorderW,
+                        -viewHeight / 2f + topOffset + tempBorderW,
+                        (progressWidth * scaleProgress / maxProgress - viewWidth / 2f + leftOffset) + tempBorderW,
+                        viewHeight / 2f - bottomOffset - tempBorderW);
             }
         }
         return progressRectF;
@@ -526,7 +500,7 @@ public class MyProgress extends View {
             return this;
         }
         this.borderWidth = borderWidth;
-        borderPaint.setStrokeWidth(borderWidth * 2);
+        borderPaint.setStrokeWidth(borderWidth * 2f);
 
         updateBGPath();
         updateBorderPath();

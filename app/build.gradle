@@ -8,7 +8,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -23,15 +23,15 @@ android {
         }
     }
     packagingOptions {
-        exclude 'META-INF/proguard/androidx-annotations.pro'
+//        exclude 'META-INF/proguard/androidx-annotations.pro'
     }
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:28.+'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    implementation 'com.android.support:appcompat-v7:28.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     implementation project(':MyProgress')
     implementation(name: 'SelectColorDialog-debug', ext: 'aar')

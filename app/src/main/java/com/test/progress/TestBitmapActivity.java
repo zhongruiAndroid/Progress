@@ -3,12 +3,12 @@ package com.test.progress;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
-import android.graphics.Color;
 import android.graphics.Shader;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.github.progress.MyProgress;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TestBitmapActivity extends AppCompatActivity {
 

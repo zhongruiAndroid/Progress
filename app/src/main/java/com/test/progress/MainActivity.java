@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;

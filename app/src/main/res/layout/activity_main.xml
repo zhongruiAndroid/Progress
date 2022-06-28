@@ -19,7 +19,7 @@
         app:viewHeight="30dp"
         app:viewWidth="220dp" />
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mp">
@@ -276,28 +276,28 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 >
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbTopLeftNoRadius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="左上不用"
                     android:textSize="11sp"
                     />
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbTopRightNoRadius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="右上不用"
                     android:textSize="11sp"
                     />
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbBottomRightNoRadius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="右下不用"
                     android:textSize="11sp"
                     />
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbBottomLeftNoRadius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -317,28 +317,28 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 >
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbTopLeftNoRadius2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="左上不用"
                     android:textSize="11sp"
                     />
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbTopRightNoRadius2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="右上不用"
                     android:textSize="11sp"
                     />
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbBottomRightNoRadius2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="右下不用"
                     android:textSize="11sp"
                     />
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbBottomLeftNoRadius2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -353,6 +353,6 @@
                 android:layout_gravity="center"
                 android:text="图片进度条" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>
