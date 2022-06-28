@@ -186,6 +186,7 @@ public class MyProgress extends View {
         maxProgress = typedArray.getFloat(R.styleable.MyProgress_maxProgress, 100);
         nowProgress = typedArray.getFloat(R.styleable.MyProgress_nowProgress, 0);
         angle = typedArray.getInt(R.styleable.MyProgress_angle, 0);
+        setAngle(angle);
         duration = typedArray.getInt(R.styleable.MyProgress_duration, 1200);
 
         noTopLeftRadius = typedArray.getBoolean(R.styleable.MyProgress_noTopLeftRadius, false);
@@ -667,7 +668,11 @@ public class MyProgress extends View {
 
     public MyProgress setAngle(int angle) {
         this.angle = angle;
-        setRotateAngle(angle % 360);
+        if (this.angle < 0) {
+            setRotateAngle(angle % 360 + 360);
+        } else {
+            setRotateAngle(angle % 360);
+        }
         return this;
     }
 
